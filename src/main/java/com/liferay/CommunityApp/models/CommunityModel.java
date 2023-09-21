@@ -32,4 +32,65 @@ public class CommunityModel {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<UserModel> members;
+
+    @OneToMany(mappedBy = "community")
+    private List<PostModel> posts;
+
+    @OneToMany(mappedBy = "community")
+    private List<InvitationModel> invitations;
+
+    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate,
+                          CommunityPrivacy privacy, UserModel creator, List<UserModel> members, List<PostModel> posts,
+                          List<InvitationModel> invitations) {
+        this.communityId = communityId;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.creationDate = creationDate;
+        this.privacy = privacy;
+        this.creator = creator;
+        this.members = members;
+        this.posts = posts;
+        this.invitations = invitations;
+    }
+
+    public UUID getCommunityId() {
+        return communityId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public CommunityPrivacy getPrivacy() {
+        return privacy;
+    }
+
+    public UserModel getCreator() {
+        return creator;
+    }
+
+    public List<UserModel> getMembers() {
+        return members;
+    }
+
+    public List<PostModel> getPosts() {
+        return posts;
+    }
+
+    public List<InvitationModel> getInvitations() {
+        return invitations;
+    }
 }

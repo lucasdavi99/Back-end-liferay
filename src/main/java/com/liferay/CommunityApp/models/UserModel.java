@@ -23,15 +23,28 @@ public class UserModel implements UserDetails {
     @Column(name = "password")
     private String password;
     private UserRole role = UserRole.USER;
+    @ManyToMany(mappedBy = "members")
+    private List<CommunityModel> communities;
+
+    @OneToMany(mappedBy = "author")
+    private List<PostModel> posts;
+
+    @OneToMany(mappedBy = "author")
+    private List<CommentModel> comments;
 
     public UserModel() {
     }
 
-    public UserModel(UUID userId, String login, String email, String password) {
+    public UserModel(UUID userId, String login, String email, String password, UserRole role, List<CommunityModel> communities,
+                     List<PostModel> posts, List<CommentModel> comments) {
         this.userId = userId;
         this.login = login;
         this.email = email;
         this.password = password;
+        this.role = role;
+        this.communities = communities;
+        this.posts = posts;
+        this.comments = comments;
     }
 
     public UserModel(String email, String login, String password) {
@@ -55,6 +68,18 @@ public class UserModel implements UserDetails {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public List<CommunityModel> getCommunities() {
+        return communities;
+    }
+
+    public List<PostModel> getPosts() {
+        return posts;
+    }
+
+    public List<CommentModel> getComments() {
+        return comments;
     }
 
     //    Métodos do usuário

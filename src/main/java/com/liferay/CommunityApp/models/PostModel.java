@@ -23,13 +23,19 @@ public class PostModel {
     private CommunityModel community;
     @OneToMany(mappedBy = "post")
     private List<CommentModel> comments;
+    @Column(name = "content")
+    private String content;
+    @Column(name = "image")
+    private String image;
 
-    public PostModel(UUID postId, String content, LocalDateTime creationDate, UserModel author, CommunityModel community, List<CommentModel> comments) {
+    public PostModel(UUID postId, LocalDateTime creationDate, UserModel author, CommunityModel community, List<CommentModel> comments, String content, String image) {
         this.postId = postId;
         this.creationDate = creationDate;
         this.author = author;
         this.community = community;
         this.comments = comments;
+        this.content = content;
+        this.image = image;
     }
 
     public UUID getPostId() {

@@ -16,5 +16,7 @@ public class PostService {
     @Autowired
     private CommunityRepository communityRepository;
 
-    public void createPost()
+    public void createPost() {
+
+    }
 }

@@ -25,10 +25,11 @@ public class PostModel {
     private List<CommentModel> comments;
     @Column(name = "content")
     private String content;
+    @Lob
     @Column(name = "image")
-    private String image;
+    private byte[] image;
 
-    public PostModel(UUID postId, LocalDateTime creationDate, UserModel author, CommunityModel community, List<CommentModel> comments, String content, String image) {
+    public PostModel(UUID postId, LocalDateTime creationDate, UserModel author, CommunityModel community, List<CommentModel> comments, String content, byte[] image) {
         this.postId = postId;
         this.creationDate = creationDate;
         this.author = author;
@@ -56,5 +57,13 @@ public class PostModel {
 
     public List<CommentModel> getComments() {
         return comments;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public byte[] getImage() {
+        return image;
     }
 }

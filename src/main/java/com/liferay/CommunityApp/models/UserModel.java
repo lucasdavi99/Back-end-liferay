@@ -15,6 +15,7 @@ public class UserModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private UUID userId;
     @Column(name = "login")
     private String login;

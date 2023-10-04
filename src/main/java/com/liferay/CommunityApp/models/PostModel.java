@@ -29,6 +29,8 @@ public class PostModel {
     @Column(name = "image")
     private byte[] image;
 
+    public PostModel() {}
+
     public PostModel(UUID postId, LocalDateTime creationDate, UserModel author, CommunityModel community, List<CommentModel> comments, String content, byte[] image) {
         this.postId = postId;
         this.creationDate = creationDate;
@@ -43,27 +45,55 @@ public class PostModel {
         return postId;
     }
 
+    public void setPostId(UUID postId) {
+        this.postId = postId;
+    }
+
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public UserModel getAuthor() {
         return author;
     }
 
+    public void setAuthor(UserModel author) {
+        this.author = author;
+    }
+
     public CommunityModel getCommunity() {
         return community;
+    }
+
+    public void setCommunity(CommunityModel community) {
+        this.community = community;
     }
 
     public List<CommentModel> getComments() {
         return comments;
     }
 
+    public void setComments(List<CommentModel> comments) {
+        this.comments = comments;
+    }
+
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public byte[] getImage() {
         return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

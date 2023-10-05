@@ -54,9 +54,7 @@ public class CommunityModel {
         this.invitations = invitations;
     }
 
-    public UUID getCommunityId() {
-        return communityId;
-    }
+    public UUID getCommunityId() {return communityId;}
 
     public String getName() {
         return name;

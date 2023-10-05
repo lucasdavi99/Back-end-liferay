@@ -25,20 +25,18 @@ public class PostService {
     @Autowired
     private CommunityRepository communityRepository;
 
-    public PostModel createPost(PostDTO postDTO) {
 
-        //Capturando os dados do DTO
-        String content = postDTO.content();
-        byte[] image = postDTO.image();
+    public PostModel createPost(PostModel postModel) {
+        UserModel author = postModel.getAuthor();
+        CommunityModel community = postModel.getCommunity();
 
-        //Criação da função
-        PostModel newPost = new PostModel();
-        newPost.setCreationDate(LocalDateTime.now());
-        newPost.setAuthor((UserModel) userRepository);
-        newPost.setCommunity((CommunityModel) communityRepository);
-        newPost.setContent(content);
-        newPost.setImage(image);
+        if (author == null || community == null) {
+            // Trate o caso em que o autor ou a comunidade não foram encontrados.
+            return null;
+        }
 
-        return postRepository.save(newPost);
+        postModel.setCreationDate(LocalDateTime.now());
+
+        return postRepository.save(postModel);
     }
 }

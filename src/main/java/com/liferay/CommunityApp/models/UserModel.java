@@ -83,11 +83,7 @@ public class UserModel implements UserDetails {
         return comments;
     }
 
-    //    Métodos do usuário
-
-
-
-
+    
     //    Métodos da interface UserDetail
 
     @Override

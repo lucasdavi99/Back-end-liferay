@@ -1,6 +1,8 @@
 package com.liferay.CommunityApp.controllers;
 
+import com.liferay.CommunityApp.configs.security.TokenService;
 import com.liferay.CommunityApp.dtos.AuthenticationDTO;
+import com.liferay.CommunityApp.dtos.LoginResponseDTO;
 import com.liferay.CommunityApp.dtos.UserRecordDTO;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.UserRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +25,16 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid AuthenticationDTO data) {
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         if (this.userRepository.findByLogin(data.login()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado");
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((UserModel) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")

@@ -14,12 +14,6 @@ public class MessageModel {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "addressee")
-    private UserModel addressee;
-
-    @Column(name = "sender")
-    private  UserModel sender;
-
     @Column(name = "content")
     private String contend;
 
@@ -30,10 +24,8 @@ public class MessageModel {
 
     }
 
-    public MessageModel(UUID id, UserModel addressee, UserModel sender, String contend, LocalDateTime datetime) {
+    public MessageModel(UUID id, String contend, LocalDateTime datetime) {
         this.id = id;
-        this.addressee = addressee;
-        this.sender = sender;
         this.contend = contend;
         this.datetime = datetime;
     }
@@ -42,13 +34,6 @@ public class MessageModel {
         return id;
     }
 
-    public UserModel getAddressee() {
-        return addressee;
-    }
-
-    public UserModel getSender() {
-        return sender;
-    }
 
     public String getContend() {
         return contend;

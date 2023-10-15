@@ -1,17 +1,18 @@
 package com.liferay.CommunityApp.service;
 
-import com.liferay.CommunityApp.dtos.PostDTO;
+import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.PostModel;
 import com.liferay.CommunityApp.models.UserModel;
-import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.repositories.PostRepository;
-import com.liferay.CommunityApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 public class PostService {
@@ -19,24 +20,29 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public PostModel createPost(PostModel postModel) throws CustomAuthenticationException {
+        // Obtém o usuário autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @Autowired
-    private CommunityRepository communityRepository;
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
+            // Define o autor e a comunidade da postagem
+            UserModel author = postModel.getAuthor();
+            CommunityModel community = postModel.getCommunity();
+            UserModel currentUser = (UserModel) userDetails;
 
-    public PostModel createPost(PostModel postModel) {
-        UserModel author = postModel.getAuthor();
-        CommunityModel community = postModel.getCommunity();
+            // Define o autor e a comunidade
+            postModel.setAuthor(currentUser);
+            postModel.setCommunity(community);
+            postModel.setCreationDate(LocalDateTime.now());
 
-        if (author == null || community == null) {
-            // Trate o caso em que o autor ou a comunidade não foram encontrados.
-            return null;
+            // Salva a postagem no repositório
+            return postRepository.save(postModel);
+        } else {
+            // Lidere com a falta de autenticação de alguma forma, como lançando uma exceção.
+            throw new CustomAuthenticationException("Usuário não autenticado");
         }
-
-        postModel.setCreationDate(LocalDateTime.now());
-
-        return postRepository.save(postModel);
     }
+
 }

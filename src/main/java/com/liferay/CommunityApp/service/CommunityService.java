@@ -7,7 +7,15 @@ import java.util.UUID;
 
 @Service
 public class CommunityService {
-    public CommunityModel findById(UUID communityId) {
-        return null;
+
+    public List<CommunityModel> findAll(){
+        return CommunityRepository.findAll();
     }
+
+    public CommunityModel findById(UUID communityId) {
+        Optional<CommunityModel> obj = CommunityRepository.findById(id);
+        return obj.get();
+
+    }
+
 }

@@ -54,6 +54,13 @@ public class UserModel implements UserDetails {
         this.password = password;
     }
 
+    public UserModel(UUID userId, String login, String email, String password, UserRole role) {
+        this.userId = userId;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     public UUID getUserId() {
         return userId;

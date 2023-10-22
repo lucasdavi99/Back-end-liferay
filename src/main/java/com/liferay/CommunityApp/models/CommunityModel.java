@@ -107,6 +107,46 @@ public class CommunityModel {
         return invitations;
     }
 
+    public void setCommunityId(UUID communityId) {
+        this.communityId = communityId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setPrivacy(CommunityPrivacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public void setCreator(UserModel creator) {
+        this.creator = creator;
+    }
+
+    public void setMembers(List<UserModel> members) {
+        this.members = members;
+    }
+
+    public void setPosts(List<PostModel> posts) {
+        this.posts = posts;
+    }
+
+    public void setInvitations(List<InvitationModel> invitations) {
+        this.invitations = invitations;
+    }
+
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;

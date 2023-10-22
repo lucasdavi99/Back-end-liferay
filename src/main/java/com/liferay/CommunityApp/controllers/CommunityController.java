@@ -48,4 +48,10 @@ public class CommunityController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CommunityModel> update(@PathVariable UUID communityId, @RequestBody CommunityModel obj) {
+        obj = communityService.update(communityId, obj);
+        return ResponseEntity.ok().body(obj);
+    }
+
 }

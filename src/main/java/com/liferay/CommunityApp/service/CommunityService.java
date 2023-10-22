@@ -32,4 +32,18 @@ public class CommunityService {
         communityRepository.deleteById(communityId);
     }
 
+    public CommunityModel update (UUID communityId, CommunityModel obj){
+        CommunityModel entity = communityRepository.getReferenceById(communityId);
+        updateData(entity, obj);
+        return communityRepository.save(entity);
+    }
+
+    private void updateData(CommunityModel entity, CommunityModel obj) {
+        entity.setName(obj.getName());
+        entity.setDescription(obj.getDescription());
+        entity.setLocation(obj.getLocation());
+        entity.setMembers(obj.getMembers());
+        entity.setPrivacy(obj.getPrivacy());
+    }
+
 }

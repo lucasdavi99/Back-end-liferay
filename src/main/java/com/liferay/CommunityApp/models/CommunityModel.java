@@ -4,6 +4,7 @@ import com.liferay.CommunityApp.enums.CommunityPrivacy;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class CommunityModel {
     private LocalDateTime creationDate;
     @Enumerated(EnumType.STRING)
     private CommunityPrivacy privacy;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private UserModel creator;
@@ -32,10 +34,10 @@ public class CommunityModel {
             joinColumns = @JoinColumn(name = "community_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<UserModel> members;
+    private List<UserModel> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "community")
-    private List<PostModel> posts;
+    private List<PostModel> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "community")
     private List<InvitationModel> invitations;
@@ -53,6 +55,16 @@ public class CommunityModel {
         this.members = members;
         this.posts = posts;
         this.invitations = invitations;
+    }
+
+    public CommunityModel(UUID communityId, String name, String description, String location, CommunityPrivacy privacy, UserModel creator, List<UserModel> members) {
+        this.communityId = communityId;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.privacy = privacy;
+        this.creator = creator;
+        this.members = members;
     }
 
     public UUID getCommunityId() {return communityId;}

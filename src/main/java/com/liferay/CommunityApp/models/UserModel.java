@@ -1,5 +1,6 @@
 package com.liferay.CommunityApp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.liferay.CommunityApp.enums.UserRole;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,18 @@ public class UserModel implements UserDetails {
     @Column(name = "password")
     private String password;
     private UserRole role = UserRole.USER;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "members")
-    private List<CommunityModel> communities;
+    private List<CommunityModel> communities =new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
-    private List<PostModel> posts;
+    private List<PostModel> posts = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
-    private List<CommentModel> comments;
+    private List<CommentModel> comments = new ArrayList<>();
 
     public UserModel() {
     }
@@ -60,6 +65,15 @@ public class UserModel implements UserDetails {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public UserModel(UUID userId, String login, String email, String password, UserRole role, List<CommunityModel> communities) {
+        this.userId = userId;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.communities = communities;
     }
 
     public UUID getUserId() {

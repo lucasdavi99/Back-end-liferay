@@ -35,12 +35,9 @@ public class PostService {
             // Define o autor e a comunidade
             postModel.setAuthor(currentUser);
             postModel.setCommunity(community);
-            postModel.setCreationDate(LocalDateTime.now());
 
-            // Salva a postagem no repositório
             return postRepository.save(postModel);
         } else {
-            // Lidere com a falta de autenticação de alguma forma, como lançando uma exceção.
             throw new CustomAuthenticationException("Usuário não autenticado");
         }
     }

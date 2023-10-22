@@ -16,14 +16,16 @@ public class CommunityModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID communityId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "location")
     private String location;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
     @Enumerated(EnumType.STRING)
     private CommunityPrivacy privacy;
-
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private UserModel creator;

@@ -24,4 +24,12 @@ public class CommunityService {
         return obj.get();
     }
 
+    public CommunityModel insert(CommunityModel obj) {
+        return communityRepository.save(obj);
+    }
+
+    public void delete(UUID communityId){
+        communityRepository.deleteById(communityId);
+    }
+
 }

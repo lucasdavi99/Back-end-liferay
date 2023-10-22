@@ -5,11 +5,10 @@ import com.liferay.CommunityApp.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +26,7 @@ public class CommunityController {
         return ResponseEntity.ok().body(communities);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") UUID id) {
         Optional<CommunityModel> community = Optional.ofNullable(communityService.findById(id));
         if (community.isEmpty()) {
@@ -35,4 +34,18 @@ public class CommunityController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(community.get());
     }
+
+    @PostMapping
+    public ResponseEntity<CommunityModel> insert(@RequestBody CommunityModel obj){
+        obj = communityService.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getCommunityId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID communityId){
+        communityService.delete(communityId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

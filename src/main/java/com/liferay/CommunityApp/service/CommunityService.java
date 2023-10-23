@@ -2,6 +2,7 @@ package com.liferay.CommunityApp.service;
 
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.repositories.CommunityRepository;
+import com.liferay.CommunityApp.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CommunityService {
 
     public CommunityModel findById(UUID communityId) {
         Optional<CommunityModel> obj = communityRepository.findById(communityId);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(communityId));
     }
 
     public CommunityModel insert(CommunityModel obj) {

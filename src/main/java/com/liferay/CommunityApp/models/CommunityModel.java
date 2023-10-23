@@ -15,6 +15,7 @@ public class CommunityModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private UUID communityId;
     @Column(name = "name")
     private String name;

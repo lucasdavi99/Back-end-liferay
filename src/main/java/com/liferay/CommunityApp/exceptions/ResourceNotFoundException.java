@@ -1,4 +1,4 @@
-package com.liferay.CommunityApp.service.exceptions;
+package com.liferay.CommunityApp.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;

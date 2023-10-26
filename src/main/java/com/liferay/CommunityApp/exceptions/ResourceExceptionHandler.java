@@ -1,6 +1,5 @@
-package com.liferay.CommunityApp.controllers.exceptions;
+package com.liferay.CommunityApp.exceptions;
 
-import com.liferay.CommunityApp.service.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

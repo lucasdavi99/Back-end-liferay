@@ -1,4 +1,4 @@
-package com.liferay.CommunityApp.controllers.exceptions;
+package com.liferay.CommunityApp.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

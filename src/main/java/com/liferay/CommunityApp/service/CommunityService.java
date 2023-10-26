@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CommunityService {
 
     @Autowired
-    CommunityRepository communityRepository;
+    private CommunityRepository communityRepository;
 
     public List<CommunityModel> findAll(){
         return communityRepository.findAll();
@@ -30,7 +30,11 @@ public class CommunityService {
     }
 
     public void delete(UUID communityId){
-        communityRepository.deleteById(communityId);
+        try {
+            communityRepository.deleteById(communityId);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
     public CommunityModel update (UUID communityId, CommunityModel obj){

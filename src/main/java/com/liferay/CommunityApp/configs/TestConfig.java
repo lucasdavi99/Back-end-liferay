@@ -1,6 +1,6 @@
 package com.liferay.CommunityApp.configs;
 
-import com.liferay.CommunityApp.enums.CommunityPrivacy;
+import com.liferay.CommunityApp.enums.CommunityPrivate;
 import com.liferay.CommunityApp.enums.UserRole;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.UserModel;
@@ -13,10 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 @Configuration
 @Profile("test")
@@ -44,8 +41,8 @@ public class TestConfig implements CommandLineRunner {
         UserModel u3 = new UserModel(null, "kerven", "teste@gmail.com", encodedPasswordUser3, UserRole.USER);
 
         //comunidades de teste
-        CommunityModel c1 = new CommunityModel(null, "Fifinha dos cria", "Melhor comunidade para fifeiros", "Brasil, Pernambuco", CommunityPrivacy.PUBLIC, u1, Arrays.asList(u1, u2));
-        CommunityModel c2 = new CommunityModel(null, "Ingles dos cria", "Melhor comunidade para aprendizes de ingles", "Brasil, Pernambuco", CommunityPrivacy.PUBLIC, u3, Arrays.asList(u1, u2, u3));
+        CommunityModel c1 = new CommunityModel(null, "Fifinha dos cria", "Melhor comunidade para fifeiros", "Brasil, Pernambuco", CommunityPrivate.PUBLIC, u1, Arrays.asList(u1, u2));
+        CommunityModel c2 = new CommunityModel(null, "Ingles dos cria", "Melhor comunidade para aprendizes de ingles", "Brasil, Pernambuco", CommunityPrivate.PUBLIC, u3, Arrays.asList(u1, u2, u3));
 
         userRepository.saveAll(Arrays.asList(u1, u2,u3));
         communityRepository.saveAll(Arrays.asList(c1, c2));

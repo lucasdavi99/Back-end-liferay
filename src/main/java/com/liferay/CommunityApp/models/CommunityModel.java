@@ -1,6 +1,6 @@
 package com.liferay.CommunityApp.models;
 
-import com.liferay.CommunityApp.enums.CommunityPrivacy;
+import com.liferay.CommunityApp.enums.CommunityPrivate;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class CommunityModel {
     private byte[] coverPhoto;
     private byte[] profilePhoto;
     @Enumerated(EnumType.STRING)
-    private CommunityPrivacy privacy;
+    private CommunityPrivate isPrivate;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
@@ -45,7 +45,7 @@ public class CommunityModel {
     @OneToMany(mappedBy = "community")
     private List<InvitationModel> invitations;
 
-    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate, byte[] coverPhoto, byte[] profilePhoto, CommunityPrivacy privacy, UserModel creator, List<UserModel> members, List<PostModel> posts, List<InvitationModel> invitations) {
+    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate, byte[] coverPhoto, byte[] profilePhoto, CommunityPrivate privacy, UserModel creator, List<UserModel> members, List<PostModel> posts, List<InvitationModel> invitations) {
         this.communityId = communityId;
         this.name = name;
         this.description = description;
@@ -53,19 +53,19 @@ public class CommunityModel {
         this.creationDate = creationDate;
         this.coverPhoto = coverPhoto;
         this.profilePhoto = profilePhoto;
-        this.privacy = privacy;
+        this.isPrivate = isPrivate;
         this.creator = creator;
         this.members = members;
         this.posts = posts;
         this.invitations = invitations;
     }
 
-    public CommunityModel(UUID communityId, String name, String description, String location, CommunityPrivacy privacy, UserModel creator, List<UserModel> members) {
+    public CommunityModel(UUID communityId, String name, String description, String location, CommunityPrivate privacy, UserModel creator, List<UserModel> members) {
         this.communityId = communityId;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.privacy = privacy;
+        this.isPrivate = isPrivate;
         this.creator = creator;
         this.members = members;
     }
@@ -104,8 +104,8 @@ public class CommunityModel {
         this.profilePhoto = profilePhoto;
     }
 
-    public CommunityPrivacy getPrivacy() {
-        return privacy;
+    public CommunityPrivate getIsPrivate() {
+        return isPrivate;
     }
 
     public UserModel getCreator() {
@@ -144,8 +144,8 @@ public class CommunityModel {
         this.creationDate = creationDate;
     }
 
-    public void setPrivacy(CommunityPrivacy privacy) {
-        this.privacy = privacy;
+    public void setPrivacy(CommunityPrivate privacy) {
+        this.isPrivate = isPrivate;
     }
 
     public void setCreator(UserModel creator) {

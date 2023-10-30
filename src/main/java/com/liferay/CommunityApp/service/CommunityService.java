@@ -48,7 +48,7 @@ public class CommunityService {
         entity.setDescription(obj.getDescription());
         entity.setLocation(obj.getLocation());
         entity.setMembers(obj.getMembers());
-        entity.setPrivacy(obj.getPrivacy());
+        entity.setPrivacy(obj.getIsPrivate());
     }
 
 }

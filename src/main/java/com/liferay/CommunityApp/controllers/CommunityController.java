@@ -36,7 +36,7 @@ public class CommunityController {
     }
 
     @PostMapping
-    public ResponseEntity<CommunityModel> insert(@RequestBody CommunityModel obj){
+    public ResponseEntity<CommunityModel> insert(@RequestBody  CommunityModel obj){
         obj = communityService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getCommunityId()).toUri();
         return ResponseEntity.created(uri).body(obj);

@@ -17,16 +17,16 @@ public class CommunityModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID communityId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "description")
     private String description;
-    @Column(name = "location")
     private String location;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+    private byte[] coverPhoto;
+    private byte[] profilePhoto;
     @Enumerated(EnumType.STRING)
     private CommunityPrivacy privacy;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private UserModel creator;
@@ -45,14 +45,14 @@ public class CommunityModel {
     @OneToMany(mappedBy = "community")
     private List<InvitationModel> invitations;
 
-    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate,
-                          CommunityPrivacy privacy, UserModel creator, List<UserModel> members, List<PostModel> posts,
-                          List<InvitationModel> invitations) {
+    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate, byte[] coverPhoto, byte[] profilePhoto, CommunityPrivacy privacy, UserModel creator, List<UserModel> members, List<PostModel> posts, List<InvitationModel> invitations) {
         this.communityId = communityId;
         this.name = name;
         this.description = description;
         this.location = location;
         this.creationDate = creationDate;
+        this.coverPhoto = coverPhoto;
+        this.profilePhoto = profilePhoto;
         this.privacy = privacy;
         this.creator = creator;
         this.members = members;
@@ -86,6 +86,22 @@ public class CommunityModel {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public byte[] getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(byte[] coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
+
+    public byte[] getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(byte[] profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public CommunityPrivacy getPrivacy() {

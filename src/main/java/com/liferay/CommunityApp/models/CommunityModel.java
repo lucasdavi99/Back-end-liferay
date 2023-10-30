@@ -45,7 +45,14 @@ public class CommunityModel {
     @OneToMany(mappedBy = "community")
     private List<InvitationModel> invitations;
 
-    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate, byte[] coverPhoto, byte[] profilePhoto, CommunityPrivate privacy, UserModel creator, List<UserModel> members, List<PostModel> posts, List<InvitationModel> invitations) {
+    //Construtores
+
+
+    public CommunityModel() {}
+
+    public CommunityModel(UUID communityId, String name, String description, String location, LocalDateTime creationDate,
+                          byte[] coverPhoto, byte[] profilePhoto, CommunityPrivate isPrivate, UserModel creator,
+                          List<UserModel> members, List<PostModel> posts, List<InvitationModel> invitations) {
         this.communityId = communityId;
         this.name = name;
         this.description = description;
@@ -60,7 +67,8 @@ public class CommunityModel {
         this.invitations = invitations;
     }
 
-    public CommunityModel(UUID communityId, String name, String description, String location, CommunityPrivate privacy, UserModel creator, List<UserModel> members) {
+    public CommunityModel(UUID communityId, String name, String description, String location, CommunityPrivate isPrivate,
+                          UserModel creator, List<UserModel> members) {
         this.communityId = communityId;
         this.name = name;
         this.description = description;
@@ -69,6 +77,9 @@ public class CommunityModel {
         this.creator = creator;
         this.members = members;
     }
+
+
+    // Metódos Get
 
     public UUID getCommunityId() {return communityId;}
 
@@ -123,6 +134,9 @@ public class CommunityModel {
     public List<InvitationModel> getInvitations() {
         return invitations;
     }
+
+
+    // Metódos Set
 
     public void setCommunityId(UUID communityId) {
         this.communityId = communityId;

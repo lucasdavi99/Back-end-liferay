@@ -1,9 +1,13 @@
 package com.liferay.CommunityApp.service;
 
 import com.liferay.CommunityApp.models.CommunityModel;
+import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +29,12 @@ public class CommunityService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(communityId));
     }
 
-    public CommunityModel insert(CommunityModel obj) {
+    public CommunityModel create(CommunityModel obj) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserModel currentUser = (UserModel) userDetails;
+        obj.setCreator(currentUser);
+
         return communityRepository.save(obj);
     }
 

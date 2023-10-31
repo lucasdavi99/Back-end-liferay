@@ -1,7 +1,10 @@
 package com.liferay.CommunityApp.controllers;
 
+import com.liferay.CommunityApp.dtos.CommunityDTO;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.service.CommunityService;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +38,11 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(community.get());
     }
 
-    @PostMapping
-    public ResponseEntity<CommunityModel> insert(@RequestBody  CommunityModel obj){
-        obj = communityService.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getCommunityId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
+    @PostMapping(value = "new-community")
+    public ResponseEntity<Object> insert(@RequestBody @Valid CommunityDTO communityDTO){
+        var communityModel = new CommunityModel();
+        BeanUtils.copyProperties(communityDTO, communityModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(communityService.create(communityModel));
     }
 
     @DeleteMapping(value = "/{id}")

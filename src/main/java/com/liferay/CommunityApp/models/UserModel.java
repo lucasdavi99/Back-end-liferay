@@ -24,6 +24,7 @@ public class UserModel implements UserDetails {
     private String email;
     @Column(name = "password")
     private String password;
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
     @JsonIgnore

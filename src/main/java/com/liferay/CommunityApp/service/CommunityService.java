@@ -1,11 +1,16 @@
 package com.liferay.CommunityApp.service;
 
-import com.liferay.CommunityApp.models.CommunityModel;
-import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.exceptions.ResourceNotFoundException;
+import com.liferay.CommunityApp.models.CommunityModel;
+import com.liferay.CommunityApp.models.UserModel;
+import com.liferay.CommunityApp.repositories.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +30,13 @@ public class CommunityService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(communityId));
     }
 
-    public CommunityModel insert(CommunityModel obj) {
-        return communityRepository.save(obj);
+    public CommunityModel create(CommunityModel communityModel) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserModel currentUser = (UserModel) userDetails;
+        communityModel.setCreator(currentUser);
+        communityModel.setCreationDate(LocalDateTime.now());
+        return communityRepository.save(communityModel);
     }
 
     public void delete(UUID communityId){
@@ -48,7 +58,7 @@ public class CommunityService {
         entity.setDescription(obj.getDescription());
         entity.setLocation(obj.getLocation());
         entity.setMembers(obj.getMembers());
-        entity.setPrivacy(obj.getIsPrivate());
+        entity.setIsPrivate(obj.getIsPrivate());
     }
 
 }

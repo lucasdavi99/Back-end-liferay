@@ -18,17 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "{communityName}")
 public class PostController {
 
     @Autowired
     PostService postService;
 
     @PostMapping("/new-post")
-    public ResponseEntity<?> createPost(@RequestBody @Valid PostDTO postDTO) {
+    public ResponseEntity<Object> createPost(@RequestBody @Valid PostDTO postDTO, @PathVariable String communityName) {
         try {
             var postModel = new PostModel();
             BeanUtils.copyProperties(postDTO, postModel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postModel));
+            return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postModel, communityName));
         } catch (CustomAuthenticationException e) {
             return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {

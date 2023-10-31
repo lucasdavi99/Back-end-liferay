@@ -8,6 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostModel, UUID> {
-
-
 }

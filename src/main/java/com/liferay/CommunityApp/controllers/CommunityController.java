@@ -3,6 +3,7 @@ package com.liferay.CommunityApp.controllers;
 import com.liferay.CommunityApp.dtos.CommunityDTO;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.service.CommunityService;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class CommunityController {
     }
 
     @PostMapping(value = "new-community")
-    public ResponseEntity<Object> insert(@RequestBody CommunityDTO communityDTO){
+    public ResponseEntity<Object> insert(@RequestBody @Valid CommunityDTO communityDTO){
         var communityModel = new CommunityModel();
         BeanUtils.copyProperties(communityDTO, communityModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(communityService.create(communityModel));

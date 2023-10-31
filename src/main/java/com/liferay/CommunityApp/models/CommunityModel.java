@@ -24,6 +24,7 @@ public class CommunityModel {
     private LocalDateTime creationDate;
     private byte[] coverPhoto;
     private byte[] profilePhoto;
+
     @Enumerated(EnumType.STRING)
     private CommunityPrivate isPrivate;
 
@@ -158,7 +159,7 @@ public class CommunityModel {
         this.creationDate = creationDate;
     }
 
-    public void setPrivacy(CommunityPrivate privacy) {
+    public void setIsPrivate(CommunityPrivate isPrivate) {
         this.isPrivate = isPrivate;
     }
 

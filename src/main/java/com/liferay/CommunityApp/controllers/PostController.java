@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class PostController {
     PostService postService;
 
     @PostMapping("/new-post/{communityName}")
-    public ResponseEntity<Object> newPost(@RequestBody @Valid PostDTO postDTO, @PathVariable(value = "communityName") String communityName) {
+    public ResponseEntity<Object> create(@RequestBody @Valid PostDTO postDTO, @PathVariable(value = "communityName") String communityName) {
         try {
             var postModel = new PostModel();
             BeanUtils.copyProperties(postDTO, postModel);
@@ -54,4 +55,19 @@ public class PostController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") UUID id) {
+        try{
+            postService.deletePost(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Postagem deletada com sucesso");
+        } catch (CustomAuthenticationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostModel>> findAll() {
+        List<PostModel> list = postService.findAll();
+        return ResponseEntity.ok().body(list);
+    }
 }

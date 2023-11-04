@@ -1,5 +1,6 @@
 package com.liferay.CommunityApp.service;
 
+import com.liferay.CommunityApp.exceptions.CommunityException;
 import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.PostModel;
 import com.liferay.CommunityApp.models.UserModel;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class PostService {
@@ -21,7 +23,9 @@ public class PostService {
     @Autowired
     CommunityRepository communityRepository;
 
-    public PostModel createPost(PostModel postModel, String communityName) throws CustomAuthenticationException {
+    //Método para criar a postagem
+    public PostModel createPost(PostModel postModel, String communityName) throws CustomAuthenticationException, CommunityException {
+
         // Obtém o usuário autenticado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -29,13 +33,15 @@ public class PostService {
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-
             // Define o autor
             postModel.setAuthor((UserModel) userDetails);
 
             //Define a comunidade
             var community = communityRepository.findByName(communityName);
             postModel.setCommunity(community);
+            if (community == null) {
+                throw new CommunityException("Comunidade não encontrada ou nome de comunidade inválido");
+            }
 
             //Define o tempo que foi criado
             postModel.setCreationDate(LocalDateTime.now());
@@ -44,6 +50,28 @@ public class PostService {
         } else {
             throw new CustomAuthenticationException("Usuário não autenticado");
         }
+    }
+
+    //Método para editar a postagem
+    public PostModel updatePost(UUID id, PostModel postModel) throws Exception {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var post = postRepository.getReferenceById(id);
+
+        if (authentication != null && authentication.isAuthenticated()) {
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            if (!userDetails.getUsername().equals(post.getAuthor().getUsername())) {
+                throw new Exception("Somente o autor da postagem pode modificá-la");
+            }
+        }
+        updateData(post, postModel);
+        return postRepository.save(post);
+    }
+
+    private void updateData(PostModel post, PostModel postModel) {
+        post.setContent(postModel.getContent());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.liferay.CommunityApp.controllers;
 
 import com.liferay.CommunityApp.dtos.PostDTO;
+import com.liferay.CommunityApp.exceptions.CommunityException;
 import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.PostModel;
 import com.liferay.CommunityApp.service.PostService;
@@ -9,31 +10,48 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "{communityName}")
+@RequestMapping(value = "posts")
 public class PostController {
 
     @Autowired
     PostService postService;
 
-    @PostMapping("/new-post")
-    public ResponseEntity<Object> createPost(@RequestBody @Valid PostDTO postDTO, @PathVariable String communityName) {
+    @PostMapping("/new-post/{communityName}")
+    public ResponseEntity<Object> newPost(@RequestBody @Valid PostDTO postDTO, @PathVariable(value = "communityName") String communityName) {
         try {
             var postModel = new PostModel();
             BeanUtils.copyProperties(postDTO, postModel);
             return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postModel, communityName));
         } catch (CustomAuthenticationException e) {
             return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
+        }catch (CommunityException e) {
+            return new ResponseEntity<>("Comunidade não encontrada ou nome de comunidade inválido", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Erro ao criar a postagem", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @RequestBody @Valid PostDTO postDTO) {
+        try {
+            PostModel postModel = new PostModel();
+            BeanUtils.copyProperties(postDTO, postModel);
+            PostModel updatedPost = postService.updatePost(id, postModel);
+
+            if (updatedPost != null) {
+                return ResponseEntity.ok(updatedPost);
+            } else {
+                return new ResponseEntity<>("Postagem não encontrada", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.liferay.CommunityApp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class PostModel {
     @JoinColumn(name = "author_id")
     private UserModel author;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "community_id")
     private CommunityModel community;
     @OneToMany(mappedBy = "post")

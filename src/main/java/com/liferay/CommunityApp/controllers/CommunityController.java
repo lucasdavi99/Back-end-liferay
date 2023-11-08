@@ -38,6 +38,16 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(community.get());
     }
 
+    @GetMapping("/findByName")
+    public List<Community> searchCommunitiesByName(@RequestParam String name) {
+        return communityService.searchByName(name);
+    }
+
+    @GetMapping("/findByDesbription")
+    public List<Community> searchCommunitiesByDescription(@RequestParam String description) {
+        return communityService.searchByDescription(description);
+    }
+
     @PostMapping(value = "new-community")
     public ResponseEntity<Object> insert(@RequestBody @Valid CommunityDTO communityDTO){
         var communityModel = new CommunityModel();

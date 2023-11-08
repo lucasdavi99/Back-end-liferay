@@ -61,4 +61,11 @@ public class CommunityService {
         entity.setIsPrivate(obj.getIsPrivate());
     }
 
+    public List<Community> searchByName(String name) {
+        return communityRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public List<Community> searchByDescription(String description) {
+        return communityRepository.findByDescriptionContainingIgnoreCase(description);
+    }
 }

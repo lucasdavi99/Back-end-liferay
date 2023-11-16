@@ -29,19 +29,19 @@ public class SecurityConfiguration {
     SecurityFilter securityFilter;
 
     private static final String[] SWAGGER_URL = {
-            "/api/v1/auth/**",
             "/v2/api-docs",
-            "v3/api-docs",
-            "v3/api-docs/**",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
             "/swagger-resources",
             "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
-            "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui/**",
-            "/swagger-docs/**",
-            "/swagger-ui.html"
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/swagger-ui.html/**",
+            "/swagger-docs/**"
     };
 
     @Bean
@@ -58,9 +58,7 @@ public class SecurityConfiguration {
                         .requestMatchers(mvcMatcherBuilder.pattern(Arrays.toString(SWAGGER_URL))).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/register")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/login")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/new-post")).hasRole("USER")
-                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

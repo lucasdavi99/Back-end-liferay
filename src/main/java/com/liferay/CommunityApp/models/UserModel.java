@@ -3,107 +3,49 @@ package com.liferay.CommunityApp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.liferay.CommunityApp.enums.UserRole;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_USER")
-public class UserModel implements UserDetails {
+public class UserModel extends RepresentationModel<UserModel> implements UserDetails, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private UUID userId;
-    @Column(name = "login")
-    private String login;
-    @Column(name = "email")
+    private UUID id;
+    @Column(unique = true)
     private String email;
-    @Column(name = "password")
+    @Column(unique = true)
+    private String login;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private String name;
+    private String bio;
+    private String local;
+    private UserRole role;
+    private byte profilePhoto;
+    private byte coverPhoto;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
-    private List<CommunityModel> communities =new ArrayList<>();
+    private List<CommunityModel> communities = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "author")
-    private List<PostModel> posts = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "author")
-    private List<CommentModel> comments = new ArrayList<>();
-
-    public UserModel() {
-    }
-
-    public UserModel(UUID userId, String login, String email, String password, UserRole role, List<CommunityModel> communities,
-                     List<PostModel> posts, List<CommentModel> comments) {
-        this.userId = userId;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.communities = communities;
-        this.posts = posts;
-        this.comments = comments;
-    }
-
-    public UserModel(String email, String login, String password) {
-        this.email = email;
-        this.login = login;
-        this.password = password;
-    }
-
-    public UserModel(UUID userId, String login, String email, String password, UserRole role) {
-        this.userId = userId;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    public UserModel(UUID userId, String login, String email, String password, UserRole role, List<CommunityModel> communities) {
-        this.userId = userId;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.communities = communities;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public List<CommunityModel> getCommunities() {
-        return communities;
-    }
-
-    public List<PostModel> getPosts() {
-        return posts;
-    }
-
-    public List<CommentModel> getComments() {
-        return comments;
-    }
+    private List<CommunityModel> myCommunnities = new ArrayList<>();
 
     
     //    Métodos da interface UserDetail

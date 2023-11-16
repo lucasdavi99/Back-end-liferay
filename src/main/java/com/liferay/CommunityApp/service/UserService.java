@@ -16,12 +16,31 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<UserModel> findAll() {
+    public void saveUser(UserModel userModel){
+        userRepository.save(userModel);
+    }
+
+    public List<UserModel> getAll() {
         return userRepository.findAll();
     }
 
-    public UserModel findById(UUID id){
+    public UserModel getById(UUID id) {
         Optional<UserModel> obj = userRepository.findById(id);
         return obj.get();
+    }
+
+    public void deleteUser(UserModel userModel){
+        userRepository.delete(userModel);
+    }
+
+    public void deleteAllUsers(){
+        userRepository.deleteAll();
+    }
+
+    public UserModel findByName(String name) {
+        if (userRepository.findByName(name).isPresent()){
+            return userRepository.findByName(name).get();
+        }
+        return null;
     }
 }

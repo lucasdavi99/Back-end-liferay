@@ -47,6 +47,12 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     @OneToMany(mappedBy = "author")
     private List<CommunityModel> myCommunnities = new ArrayList<>();
 
+    public UserModel(String email, String login, String password) {
+        this.email = email;
+        this.login = login;
+        this.password = password;
+    }
+
     
     //    Métodos da interface UserDetail
 

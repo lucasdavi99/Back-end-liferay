@@ -31,6 +31,7 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private UUID id;
     @Column(unique = true)
     private String email;
@@ -40,6 +41,7 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String name;
     private String bio;
     private String local;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
     private byte profilePhoto;
     private byte coverPhoto;
@@ -57,16 +59,15 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
         this.password = password;
     }
 
-    public UserModel(UUID id, String login, String email, String password, UserRole role) {
+    public UserModel(UUID id, String login, String email, String password, String name, UserRole role) {
         this.id = id;
         this.login = login;
         this.email = email;
         this.password = password;
+        this.name = name;
         this.role = role;
     }
-
-
-    //    Métodos da interface UserDetail
+//    Métodos da interface UserDetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

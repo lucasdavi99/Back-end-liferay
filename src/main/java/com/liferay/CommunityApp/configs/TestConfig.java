@@ -36,9 +36,9 @@ public class TestConfig implements CommandLineRunner {
         String encodedPasswordUser3 = encoder.encode("12345");
 
         //usuários de teste
-        UserModel u1 = new UserModel(null, "lacoste", "lacoste@gmail.com", encodedPasswordUser1, UserRole.ADMIN);
-        UserModel u2 = new UserModel(null, "irineu", "vocenaosabenemeu@gmail.com", encodedPasswordUser2, UserRole.USER);
-        UserModel u3 = new UserModel(null, "kerven", "teste@gmail.com", encodedPasswordUser3, UserRole.USER);
+        UserModel u1 = new UserModel(null, "lacoste", "lacoste@gmail.com", encodedPasswordUser1, "Lacoste da Silva",UserRole.ADMIN);
+        UserModel u2 = new UserModel(null, "irineu", "vocenaosabenemeu@gmail.com", encodedPasswordUser2, "Irineu naosabe",UserRole.USER);
+        UserModel u3 = new UserModel(null, "belligol", "teste@gmail.com", encodedPasswordUser3, "Bellingham",UserRole.USER);
 
         //comunidades de teste
         CommunityModel c1 = new CommunityModel(null, "Fifinha dos cria", "Melhor comunidade para fifeiros", "Brasil, Pernambuco", CommunityPrivate.PUBLIC, u1, Arrays.asList(u1, u2));

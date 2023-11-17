@@ -5,8 +5,8 @@ import com.liferay.CommunityApp.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,8 +14,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +41,7 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String name;
     private String bio;
     private String local;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
     private byte profilePhoto;
     private byte coverPhoto;
@@ -54,22 +59,15 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
         this.password = password;
     }
 
-    //public UserModel(UUID id, String name, String email, String encodedPasswordUser1, UserRole role) {
-    //    this.id = id;
-    //    this.name = name;
-    //    this.login = encodedPasswordUser1;
-    //    this.role = role;
-    //}
-
-    public UserModel(UUID id, String login, String email, String password, UserRole role) {
+    public UserModel(UUID id, String login, String email, String password, String name, UserRole role) {
         this.id = id;
         this.login = login;
         this.email = email;
         this.password = password;
-        this.role =role;
-}
-
-    //    Métodos da interface UserDetail
+        this.name = name;
+        this.role = role;
+    }
+//    Métodos da interface UserDetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

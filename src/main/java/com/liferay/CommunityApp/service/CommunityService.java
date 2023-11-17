@@ -34,8 +34,8 @@ public class CommunityService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserModel currentUser = (UserModel) userDetails;
-        communityModel.setCreator(currentUser);
-        communityModel.setCreationDate(LocalDateTime.now());
+        communityModel.setAuthor(currentUser);
+        communityModel.setCreation(LocalDateTime.now());
         return communityRepository.save(communityModel);
     }
 
@@ -58,14 +58,14 @@ public class CommunityService {
         entity.setDescription(obj.getDescription());
         entity.setLocation(obj.getLocation());
         entity.setMembers(obj.getMembers());
-        entity.setIsPrivate(obj.getIsPrivate());
+        entity.setPrivacy(obj.getPrivacy());
     }
 
-    public List<Community> searchByName(String name) {
+    public List<CommunityModel> searchByName(String name) {
         return communityRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public List<Community> searchByDescription(String description) {
+    public List<CommunityModel> searchByDescription(String description) {
         return communityRepository.findByDescriptionContainingIgnoreCase(description);
     }
 }

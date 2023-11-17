@@ -27,6 +27,7 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private UUID id;
     @Column(unique = true)
     private String email;
@@ -53,7 +54,21 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
         this.password = password;
     }
 
-    
+    //public UserModel(UUID id, String name, String email, String encodedPasswordUser1, UserRole role) {
+    //    this.id = id;
+    //    this.name = name;
+    //    this.login = encodedPasswordUser1;
+    //    this.role = role;
+    //}
+
+    public UserModel(UUID id, String login, String email, String password, UserRole role) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.role =role;
+}
+
     //    Métodos da interface UserDetail
 
     @Override

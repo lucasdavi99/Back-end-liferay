@@ -39,12 +39,12 @@ public class CommunityController {
     }
 
     @GetMapping("/findByName")
-    public List<Community> searchCommunitiesByName(@RequestParam String name) {
+    public List<CommunityModel> searchCommunitiesByName(@RequestParam String name) {
         return communityService.searchByName(name);
     }
 
     @GetMapping("/findByDesbription")
-    public List<Community> searchCommunitiesByDescription(@RequestParam String description) {
+    public List<CommunityModel> searchCommunitiesByDescription(@RequestParam String description) {
         return communityService.searchByDescription(description);
     }
 

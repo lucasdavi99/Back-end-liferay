@@ -3,7 +3,7 @@ package com.liferay.CommunityApp.controllers;
 import com.liferay.CommunityApp.configs.security.TokenService;
 import com.liferay.CommunityApp.dtos.AuthenticationDTO;
 import com.liferay.CommunityApp.dtos.LoginResponseDTO;
-import com.liferay.CommunityApp.dtos.UserRecordDTO;
+import com.liferay.CommunityApp.dtos.UserDTO;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid UserRecordDTO data) {
+    public ResponseEntity<String> register(@RequestBody @Valid UserDTO data) {
         if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body("Esse usuário já existe");
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         var newUser = new UserModel(data.email(), data.login(), encryptedPassword);

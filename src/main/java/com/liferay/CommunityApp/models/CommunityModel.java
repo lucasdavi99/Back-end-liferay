@@ -6,6 +6,7 @@ import com.liferay.CommunityApp.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,14 +38,12 @@ public class CommunityModel extends RepresentationModel implements Serializable 
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private UserModel author;
-
+    @Enumerated(EnumType.STRING)
     private UserRole authorRole = UserRole.ADMIN;
-
-    private CommunityPrivate privacy;
-
-    private LocalDateTime creation;
-
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private CommunityPrivate particular;
+    private LocalDateTime creationDate;
+    private String locale;
 
     @JsonIgnore
     @ManyToMany()
@@ -51,15 +51,9 @@ public class CommunityModel extends RepresentationModel implements Serializable 
             joinColumns = @JoinColumn(name = "community_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserModel> members = new ArrayList<>();
-
-    private byte profilePhoto;
-    private byte coverPhoto;
-
+    private byte[] profilePhoto;
+    private byte[] coverPhoto;
 
 //@OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
 //private List<PostModel> posts;
-
-    public <T> CommunityModel(Object o, String inglesDosCria, String s, String s1, CommunityPrivate communityPrivate, UserModel u3, List<T> list) {
-    }
-
 }

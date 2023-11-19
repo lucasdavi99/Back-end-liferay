@@ -49,9 +49,9 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private List<CommunityModel> communities = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
-    private List<CommunityModel> myCommunnities = new ArrayList<>();
+    private List<CommunityModel> myCommunities = new ArrayList<>();
 
     public UserModel(String email, String login, String password) {
         this.email = email;

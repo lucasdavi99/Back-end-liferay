@@ -40,11 +40,11 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String password;
     private String name;
     private String bio;
-    private String local;
+    private String locale;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private byte profilePhoto;
-    private byte coverPhoto;
+    private byte[] profilePhoto;
+    private byte[] coverPhoto;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "members")

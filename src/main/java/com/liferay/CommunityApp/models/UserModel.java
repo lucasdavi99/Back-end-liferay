@@ -1,6 +1,7 @@
 package com.liferay.CommunityApp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.liferay.CommunityApp.dtos.UserDTO;
 import com.liferay.CommunityApp.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

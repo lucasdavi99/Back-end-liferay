@@ -1,5 +1,8 @@
 package com.liferay.CommunityApp.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum CommunityPrivate {
 
     PRIVATE("private"),
@@ -11,7 +14,4 @@ public enum CommunityPrivate {
         this.role = role;
     }
 
-    public String getRole() {
-        return role;
-    }
 }

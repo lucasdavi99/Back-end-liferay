@@ -40,18 +40,18 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String password;
     private String name;
     private String bio;
-    private String local;
+    private String locale;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private byte profilePhoto;
-    private byte coverPhoto;
+    private byte[] profilePhoto;
+    private byte[] coverPhoto;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private List<CommunityModel> communities = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
-    private List<CommunityModel> myCommunnities = new ArrayList<>();
+    private List<CommunityModel> myCommunities = new ArrayList<>();
 
     public UserModel(String email, String login, String password) {
         this.email = email;

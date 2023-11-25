@@ -35,7 +35,7 @@ public class CommunityService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserModel currentUser = (UserModel) userDetails;
         communityModel.setAuthor(currentUser);
-        communityModel.setCreation(LocalDateTime.now());
+        communityModel.setCreationDate(LocalDateTime.now());
         return communityRepository.save(communityModel);
     }
 
@@ -56,9 +56,9 @@ public class CommunityService {
     private void updateData(CommunityModel entity, CommunityModel obj) {
         entity.setName(obj.getName());
         entity.setDescription(obj.getDescription());
-        entity.setLocation(obj.getLocation());
+        entity.setLocale(obj.getLocale());
         entity.setMembers(obj.getMembers());
-        entity.setPrivacy(obj.getPrivacy());
+        entity.setParticular(obj.getParticular());
     }
 
     public List<CommunityModel> searchByName(String name) {

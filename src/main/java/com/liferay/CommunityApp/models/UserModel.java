@@ -52,10 +52,10 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<CommunityModel> myCommunities = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "sender")
     private List<DirectMessageModel> sentMessages = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "receiver")
     private List<DirectMessageModel> receivedMessages = new ArrayList<>();
 

@@ -53,6 +53,12 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     @OneToMany(mappedBy = "author")
     private List<CommunityModel> myCommunities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sender")
+    private List<DirectMessageModel> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver")
+    private List<DirectMessageModel> receivedMessages = new ArrayList<>();
+
     public UserModel(String email, String login, String password) {
         this.email = email;
         this.login = login;

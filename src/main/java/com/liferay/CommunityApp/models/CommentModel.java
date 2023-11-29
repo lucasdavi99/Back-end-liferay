@@ -49,4 +49,22 @@ public class CommentModel {
     public PostModel getPost() {
         return post;
     }
+
+    public void setCreatedDate(LocalDateTime now) {
+    }
+
+    public Object getText() {
+        return null;
+    }
+
+    public void setText(Object text) {
+    }
+
+    public boolean isPresent() {
+        return false;
+    }
+
+    public CommentModel get() {
+        return null;
+    }
 }

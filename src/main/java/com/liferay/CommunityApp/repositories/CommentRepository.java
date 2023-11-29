@@ -10,5 +10,4 @@ import java.util.UUID;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentModel, UUID> {
 
-
 }

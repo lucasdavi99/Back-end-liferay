@@ -38,8 +38,8 @@ public class ReportService {
             report.setPrivateCommunity(community.getParticular());
             report.setNumberOfMembers(community.getMembers().size());
             report.setReportUpdateDate(LocalDateTime.now());
-//            report.setNumberOfPosts(postRepository.countByCommunity(community));
-//            report.setNumberOfComments(commentRepository.countByPost_Community(community));
+            report.setNumberOfPosts(postRepository.countByCommunity(community));
+            report.setNumberOfComments(commentRepository.countByPost_Community(community));
 
             reportList.add(report);
         }

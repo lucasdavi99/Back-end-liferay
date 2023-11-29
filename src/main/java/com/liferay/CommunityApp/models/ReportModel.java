@@ -24,5 +24,5 @@ public class ReportModel {
     private int numberOfMembers;
     private int numberOfPosts;
     private LocalDateTime reportUpdateDate;
-//    private int numberOfComments;
+    private int numberOfComments;
 }

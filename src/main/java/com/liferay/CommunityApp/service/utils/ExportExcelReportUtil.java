@@ -71,9 +71,8 @@ public class ExportExcelReportUtil {
             createCell(row, columnCount++, report.getCommunityName(), style);
             createCell(row, columnCount++, report.getPrivateCommunity().toString(), style);
             createCell(row, columnCount++, report.getNumberOfMembers(), style);
-            // Adicione os outros campos conforme necessário
-            // createCell(row, columnCount++, report.getNumberOfPosts(), style);
-            // createCell(row, columnCount++, report.getNumberOfComments(), style);
+             createCell(row, columnCount++, report.getNumberOfPosts(), style);
+             createCell(row, columnCount++, report.getNumberOfComments(), style);
         }
     }
 

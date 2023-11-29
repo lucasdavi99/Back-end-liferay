@@ -8,11 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record CommentDTO
-        (@NotBlank UserModel author,
-         @NotBlank String content,
-         @NotBlank LocalDateTime creationDate,
-         @NotNull PostModel post
-        )
+public record CommentDTO(@NotBlank String content)
     {
 }

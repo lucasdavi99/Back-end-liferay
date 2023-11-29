@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class PostModel {
     @JoinColumn(name = "community_id")
     private CommunityModel community;
     @OneToMany(mappedBy = "post")
-    private List<CommentModel> comments;
+    private List<CommentModel> comments = new ArrayList<>();
     @Column(name = "content")
     private String content;
     @Lob

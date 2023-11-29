@@ -1,71 +1,79 @@
 package com.liferay.CommunityApp.controllers;
 
 import com.liferay.CommunityApp.dtos.CommentDTO;
-import com.liferay.CommunityApp.dtos.PostDTO;
 import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.CommentModel;
-import com.liferay.CommunityApp.models.PostModel;
-import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.service.CommentService;
-import com.liferay.CommunityApp.service.PostService;
 import jakarta.validation.Valid;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
+@RequestMapping(value = "comments")
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
-    @PostMapping
-    public CommentModel createComment(@RequestBody CommentModel comment) {
-        comment.setCreatedDate(LocalDateTime.now());
-        return commentService.save(comment);
+    // Endpoint para criar um novo comentário
+    @PostMapping("/new-comment/{postId}")
+    public ResponseEntity<Object> newComment(@RequestBody @Valid CommentDTO commentDTO, @PathVariable(value = "postId") UUID postId) {
+        try {
+            var commentModel = new CommentModel();
+            BeanUtils.copyProperties(commentDTO, commentModel);
+            return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(commentModel, postId));
+        } catch (CustomAuthenticationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro ao criar o comentário", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping
-    public List<CommentModel> getAllComments() {
-        return commentService.findAll();
+    // Endpoint para obter todos os comentários de um post
+    @GetMapping("/by-post/{postId}")
+    public ResponseEntity<Object> getCommentsByPost(@PathVariable(value = "postId") UUID postId) {
+        try {
+            List<CommentModel> comments = commentService.findCommentsByPost(postId);
+            return ResponseEntity.ok(comments);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/comment/{id}")
-        public ResponseEntity<Object>findById(@PathVariable(value = "id")UUID id){
-            Optional<CommentModel> comment = Optional.ofNullable(commentService.findById(id));
-            
-            if(comment.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found");
-            } 
-            return ResponseEntity.status(HttpStatus.OK).body(comment.get());
+    // Endpoint para atualizar um comentário
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateComment(@PathVariable("id") UUID id, @RequestBody @Valid CommentDTO commentDTO) {
+        try {
+            CommentModel commentModel = new CommentModel();
+            BeanUtils.copyProperties(commentDTO, commentModel);
+            CommentModel updatedComment = commentService.updateComment(id, commentModel);
+
+            if (updatedComment != null) {
+                return ResponseEntity.ok(updatedComment);
+            } else {
+                return new ResponseEntity<>("Comentário não encontrado", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
-        
-        
-@PutMapping("/comment/{id}")
-    public ResponseEntity<Object> updateComment(@PathVariable(value = "id") UUID id, @RequestBody @Valid CommentDTO commentDTO){
-        Optional<CommentModel> comment0 = Optional.ofNullable(commentService.findById(id));
-        if (comment0.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found");
+    }
+
+    // Endpoint para excluir um comentário
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteComment(@PathVariable("id") UUID id) {
+        try {
+            commentService.deleteComment(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Comentário deletado com sucesso");
+        } catch (CustomAuthenticationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro ao excluir o comentário", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        var commentModel = comment0.get();
-        BeanUtils.copyProperties(commentDTO, commentModel);
-        commentService.save(commentModel);
-        return ResponseEntity.status(HttpStatus.OK).body(commentModel);
     }
 }
-
-    
-

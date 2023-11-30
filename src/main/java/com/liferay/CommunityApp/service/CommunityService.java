@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +35,11 @@ public class CommunityService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserModel currentUser = (UserModel) userDetails;
-        communityModel.setAuthor(currentUser);
-        communityModel.setCreationDate(LocalDateTime.now());
-        return communityRepository.save(communityModel);
+        if (authentication.isAuthenticated() && userDetails.isAccountNonExpired() && currentUser.isAccountNonExpired()) {
+            communityModel.setAuthor(currentUser);
+            communityModel.setCreationDate(LocalDate.now());
+        }
+            return communityRepository.save(communityModel);
     }
 
     public void delete(UUID communityId){
@@ -58,7 +61,7 @@ public class CommunityService {
         entity.setDescription(obj.getDescription());
         entity.setLocale(obj.getLocale());
         entity.setMembers(obj.getMembers());
-        entity.setParticular(obj.getParticular());
+        entity.setPrivacy(obj.getPrivacy());
     }
 
     public List<CommunityModel> searchByName(String name) {

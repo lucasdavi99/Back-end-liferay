@@ -2,6 +2,7 @@ package com.liferay.CommunityApp.service;
 
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.UserModel;
+import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.repositories.UserRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommunityRepository communityRepository;
 
     public void saveUser(UserModel userModel){
         userRepository.save(userModel);
@@ -30,7 +34,26 @@ public class UserService {
     }
 
     public void deleteUser(UserModel userModel){
-        userRepository.delete(userModel);
+        UserModel user = userRepository.findById(userModel.getId()).orElse(null);
+
+        if (user != null) {
+            // Remova o usuário das comunidades antes de excluí-lo
+            for (CommunityModel community : user.getCommunities()) {
+                community.getMembers().remove(user);
+            }
+
+            for (CommunityModel community : user.getMyCommunities()) {
+                community.setAuthor(null);
+                communityRepository.delete(community);
+            }
+            // Limpe as associações do usuário com as comunidades
+            user.getCommunities().clear();
+
+            user.getMyCommunities().clear();
+
+            // Exclua o usuário
+            userRepository.delete(user);
+        }
     }
 
     public void deleteAllUsers(){

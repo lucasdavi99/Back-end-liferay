@@ -99,4 +99,5 @@ public class CommentService {
     public List<CommentModel> findCommentsByPost(UUID postId) {
         return commentRepository.findByPost_PostId(postId);
     }
+
 }

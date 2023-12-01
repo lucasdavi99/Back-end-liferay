@@ -61,7 +61,7 @@ public class CommunityService {
         entity.setDescription(obj.getDescription());
         entity.setLocale(obj.getLocale());
         entity.setMembers(obj.getMembers());
-        entity.setPrivacy(obj.getPrivacy());
+        entity.setParticular(obj.getParticular());
     }
 
     public CommunityModel findByName(String name) {

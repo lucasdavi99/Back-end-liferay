@@ -39,26 +39,22 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String login;
     private String password;
     private String name;
-    @Column(name = "posicao")
-    private String posicao;
     private String bio;
     private String locale;
-    private Integer role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     private byte[] profilePhoto;
     private byte[] coverPhoto;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private List<CommunityModel> communities = new ArrayList<>();
-
     @JsonIgnore
-    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author")
     private List<CommunityModel> myCommunities = new ArrayList<>();
-
     @JsonIgnore
     @OneToMany(mappedBy = "sender")
     private List<DirectMessageModel> sentMessages = new ArrayList<>();
-
     @JsonIgnore
     @OneToMany(mappedBy = "receiver")
     private List<DirectMessageModel> receivedMessages = new ArrayList<>();
@@ -75,40 +71,13 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
         this.email = email;
         this.password = password;
         this.name = name;
-        setRole(role);
+        this.role = role;
     }
-
-    public UserModel(UUID id, String login, String email, String password, String name, String posicao, String bio ,String locale, UserRole role, byte[] profilePhoto, byte[] coverPhoto, List<CommunityModel> communities) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.posicao = posicao;
-        this.bio = bio;
-        this.locale = locale;
-        setRole(role);
-        this.profilePhoto = profilePhoto;
-        this.coverPhoto = coverPhoto;
-        this.communities = communities;
-    }
-
-    //get e set do atributo de role
-    public UserRole getRole() {
-        return UserRole.valueOf(role);
-    }
-
-    public void setRole(UserRole role) {
-        if (role != null) {
-            this.role = role.getCode();
-        }
-    }
-
 //    Métodos da interface UserDetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ADMIN.getCode()) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

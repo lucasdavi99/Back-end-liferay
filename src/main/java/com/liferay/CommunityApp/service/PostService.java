@@ -2,6 +2,7 @@ package com.liferay.CommunityApp.service;
 
 import com.liferay.CommunityApp.exceptions.CommunityException;
 import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
+import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.PostModel;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.CommunityRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,7 +26,6 @@ public class PostService {
     @Autowired
     CommunityRepository communityRepository;
 
-    //Método para criar a postagem
     public PostModel createPost(PostModel postModel, String communityName) throws CustomAuthenticationException, CommunityException {
 
         // Obtém o usuário autenticado
@@ -37,14 +38,17 @@ public class PostService {
             // Define o autor
             postModel.setAuthor((UserModel) userDetails);
 
-            //Define a comunidade
-            var community = communityRepository.findByName(communityName);
-            postModel.setCommunity(community);
-            if (community == null) {
+            // Define a comunidade
+            Optional<CommunityModel> communityOptional = communityRepository.findByName(communityName);
+
+            if (communityOptional.isPresent()) {
+                // Se o Optional contiver um valor, atribui à postModel
+                postModel.setCommunity(communityOptional.get());
+            } else {
                 throw new CommunityException("Comunidade não encontrada ou nome de comunidade inválido");
             }
 
-            //Define o tempo que foi criado
+            // Define o tempo que foi criado
             postModel.setCreationDate(LocalDateTime.now());
 
             return postRepository.save(postModel);
@@ -52,6 +56,7 @@ public class PostService {
             throw new CustomAuthenticationException("Para realizar essa ação é necessário estar logado");
         }
     }
+
 
     //Método para editar a postagem
     public PostModel updatePost(UUID id, PostModel postModel) throws CustomAuthenticationException {

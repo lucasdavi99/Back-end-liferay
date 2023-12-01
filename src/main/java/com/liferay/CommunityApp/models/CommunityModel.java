@@ -38,9 +38,10 @@ public class CommunityModel extends RepresentationModel implements Serializable 
 
     @ManyToOne
     private UserModel author;
+    @Enumerated(EnumType.STRING)
     private UserRole authorRole = UserRole.ADMIN;
-
-    private Integer privacy;
+    @Enumerated(EnumType.STRING)
+    private CommunityPrivate particular;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate;
     private String locale;
@@ -57,27 +58,4 @@ public class CommunityModel extends RepresentationModel implements Serializable 
 //@OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
 //private List<PostModel> posts;
 
-    public CommunityModel(UUID id, String name, String description, UserModel author, UserRole authorRol, CommunityPrivate privacy, LocalDate creationDate, List<UserModel> members, byte[] profilePhoto, byte[] coverPhoto) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.author = author;
-        authorRol = authorRol;
-        setPrivacy(privacy);
-        this.creationDate = creationDate;
-        this.members = members;
-        this.profilePhoto = profilePhoto;
-        this.coverPhoto = coverPhoto;
-    }
-
-    //get e set do atributo privacy
-    public CommunityPrivate getPrivacy() {
-        return CommunityPrivate.valueOf(privacy);
-    }
-
-    public void setPrivacy(CommunityPrivate privacy) {
-        if (privacy != null) {
-            this.privacy = privacy.getCode();
-        }
-    }
 }

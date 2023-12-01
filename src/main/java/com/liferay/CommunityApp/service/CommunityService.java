@@ -22,7 +22,7 @@ public class CommunityService {
     @Autowired
     private CommunityRepository communityRepository;
 
-    public List<CommunityModel> findAll(){
+    public List<CommunityModel> findAll() {
         return communityRepository.findAll();
     }
 
@@ -39,10 +39,10 @@ public class CommunityService {
             communityModel.setAuthor(currentUser);
             communityModel.setCreationDate(LocalDate.now());
         }
-            return communityRepository.save(communityModel);
+        return communityRepository.save(communityModel);
     }
 
-    public void delete(UUID communityId){
+    public void delete(UUID communityId) {
         try {
             communityRepository.deleteById(communityId);
         } catch (RuntimeException e) {
@@ -50,7 +50,7 @@ public class CommunityService {
         }
     }
 
-    public CommunityModel update (UUID communityId, CommunityModel obj){
+    public CommunityModel update(UUID communityId, CommunityModel obj) {
         CommunityModel entity = communityRepository.getReferenceById(communityId);
         updateData(entity, obj);
         return communityRepository.save(entity);
@@ -64,11 +64,18 @@ public class CommunityService {
         entity.setPrivacy(obj.getPrivacy());
     }
 
-    public List<CommunityModel> searchByName(String name) {
-        return communityRepository.findByNameContainingIgnoreCase(name);
+    public CommunityModel findByName(String name) {
+        if (communityRepository.findByName(name).isPresent()) {
+            return communityRepository.findByName(name).get();
+        }
+        return null;
     }
 
+
     public List<CommunityModel> searchByDescription(String description) {
-        return communityRepository.findByDescriptionContainingIgnoreCase(description);
+        if (communityRepository.findByDescription(description).isPresent()) {
+            return (List<CommunityModel>) communityRepository.findByDescription(description).get();
+        }
+        return null;
     }
 }

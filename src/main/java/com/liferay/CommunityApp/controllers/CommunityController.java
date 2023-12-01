@@ -17,19 +17,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/communities")
+@RequestMapping("communities/api/")
 public class CommunityController {
 
     @Autowired
     CommunityService communityService;
 
-    @GetMapping
+    @GetMapping("getAll")
     public ResponseEntity<List<CommunityModel>> findAll() {
         List<CommunityModel> communities = communityService.findAll();
         return ResponseEntity.ok().body(communities);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("getOne/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") UUID id) {
         Optional<CommunityModel> community = Optional.ofNullable(communityService.findById(id));
         if (community.isEmpty()) {
@@ -38,30 +38,37 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(community.get());
     }
 
-    @GetMapping("/findByName")
-    public List<CommunityModel> searchCommunitiesByName(@RequestParam String name) {
-        return communityService.searchByName(name);
+    @GetMapping("getName/{name}")
+    public ResponseEntity<Optional<CommunityModel>> getByName(@PathVariable(value = "name") String name) {
+        Optional<CommunityModel> community = Optional.ofNullable(communityService.findByName(name));
+
+        if (community.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(community);
     }
 
-    @GetMapping("/findByDesbription")
+
+    @GetMapping("getDescription/{description}")
     public List<CommunityModel> searchCommunitiesByDescription(@RequestParam String description) {
         return communityService.searchByDescription(description);
     }
 
-    @PostMapping(value = "new-community")
+    @PostMapping("post")
     public ResponseEntity<Object> insert(@RequestBody @Valid CommunityDTO communityDTO){
         var communityModel = new CommunityModel();
         BeanUtils.copyProperties(communityDTO, communityModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(communityService.create(communityModel));
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID communityId){
         communityService.delete(communityId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("deleteAll")
     public ResponseEntity<CommunityModel> update(@PathVariable UUID communityId, @RequestBody CommunityModel obj) {
         obj = communityService.update(communityId, obj);
         return ResponseEntity.ok().body(obj);

@@ -40,7 +40,7 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String password;
     private String name;
     @Column(name = "posicao")
-    private String position;
+    private String posicao;
     private String bio;
     private String locale;
     private Integer role;
@@ -78,12 +78,13 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
         setRole(role);
     }
 
-    public UserModel(UUID id, String email, String password, String name, String position, String bio ,String locale, UserRole role, byte[] profilePhoto, byte[] coverPhoto, List<CommunityModel> communities) {
+    public UserModel(UUID id, String login, String email, String password, String name, String posicao, String bio ,String locale, UserRole role, byte[] profilePhoto, byte[] coverPhoto, List<CommunityModel> communities) {
         this.id = id;
+        this.login = login;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.position = position;
+        this.posicao = posicao;
         this.bio = bio;
         this.locale = locale;
         setRole(role);

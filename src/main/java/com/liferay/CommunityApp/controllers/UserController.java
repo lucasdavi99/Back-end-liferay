@@ -85,4 +85,10 @@ public class UserController {
         userService.deleteAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body("Users deleted successfully");
     }
+
+    @PostMapping("/{userId}/joinPublicCommunity/{communityId}")
+    public ResponseEntity<Void> joinPublicCommunity(@PathVariable UUID userId, @PathVariable UUID communityId) {
+        userService.joinPublicCommunity(userId, communityId);
+        return ResponseEntity.ok().build();
+    }
 }

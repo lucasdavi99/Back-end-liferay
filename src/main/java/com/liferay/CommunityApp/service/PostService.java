@@ -33,22 +33,22 @@ public class PostService {
 
         if (authentication != null && authentication.isAuthenticated()) {
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
 
             // Define o autor
-            postModel.setAuthor((UserModel) userDetails);
+            postModel.setAuthor((UserModel) currentUser);
 
-            // Define a comunidade
-            Optional<CommunityModel> communityOptional = communityRepository.findByName(communityName);
+            //Define a comunidade
+            CommunityModel community = communityRepository.findByName(communityName).orElseThrow(() -> new CommunityException("Comunidade não encontrada ou nome de comunidade inválido"));
 
-            if (communityOptional.isPresent()) {
-                // Se o Optional contiver um valor, atribui à postModel
-                postModel.setCommunity(communityOptional.get());
-            } else {
+            if (community == null) {
                 throw new CommunityException("Comunidade não encontrada ou nome de comunidade inválido");
             }
+            if (!community.getMembers().contains(currentUser)) {
+                throw new CommunityException("Usuário não é membro da comunidade");
+            }
 
-            // Define o tempo que foi criado
+            //Define o tempo que foi criado
             postModel.setCreationDate(LocalDateTime.now());
 
             return postRepository.save(postModel);

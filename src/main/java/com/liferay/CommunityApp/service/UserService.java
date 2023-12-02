@@ -1,5 +1,7 @@
 package com.liferay.CommunityApp.service;
 
+import com.liferay.CommunityApp.enums.CommunityPrivate;
+import com.liferay.CommunityApp.exceptions.ResourceNotFoundException;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.CommunityRepository;
@@ -66,4 +68,19 @@ public class UserService {
         }
         return null;
     }
+
+    public void joinPublicCommunity(UUID userId, UUID communityId) {
+        UserModel user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        CommunityModel community = communityRepository.findById(communityId)
+                .orElseThrow(() -> new ResourceNotFoundException("Community not found with id: " + communityId));
+
+        if (community.getParticular() == CommunityPrivate.PUBLIC) {
+            community.getMembers().add(user);
+            communityRepository.save(community);
+        } else {
+            throw new IllegalStateException("Cannot join private community");
+        }
+    }
+
 }

@@ -32,9 +32,9 @@ public class PostController {
             BeanUtils.copyProperties(postDTO, postModel);
             return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postModel, communityName));
         } catch (CustomAuthenticationException e) {
-            return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }catch (CommunityException e) {
-            return new ResponseEntity<>("Comunidade não encontrada ou nome de comunidade inválido", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Erro ao criar a postagem", HttpStatus.INTERNAL_SERVER_ERROR);
         }

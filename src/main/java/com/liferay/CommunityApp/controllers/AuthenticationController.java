@@ -6,6 +6,7 @@ import com.liferay.CommunityApp.dtos.LoginResponseDTO;
 import com.liferay.CommunityApp.dtos.UserDTO;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class AuthenticationController {
     TokenService tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Faz login com usuário existente.")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         if (this.userRepository.findByLogin(data.login()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado");
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -38,6 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Registra um novo usuário.")
     public ResponseEntity<String> register(@RequestBody @Valid UserDTO data) {
         if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body("Esse usuário já existe");
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());

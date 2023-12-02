@@ -2,16 +2,25 @@ package com.liferay.CommunityApp.enums;
 
 public enum UserRole {
 
-    ADMIN("admin"),
-    USER("user");
+    USER(1),
+    ADMIN(2);
 
-    private String role;
+    private int code;
 
-    UserRole(String role) {
-        this.role = role;
+    private UserRole(int code){
+        this.code = code;
     }
 
-    public String getRole() {
-        return role;
+    public int getCode(){
+        return code;
+    }
+
+    public static UserRole valueOf(int code){
+        for (UserRole value : UserRole.values()) {
+            if (value.getCode() == code){
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Tipo de usuário inválido");
     }
 }

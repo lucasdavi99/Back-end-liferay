@@ -18,13 +18,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping("users/api/")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("post")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserDTO userDTO) {
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDTO, userModel);
@@ -32,41 +32,33 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
     }
 
-    @GetMapping("/users")
+    @GetMapping("getAll")
     public ResponseEntity<List<UserModel>> getAllUsers(){
         List<UserModel> userModelList = userService.getAll();
-        if (!userModelList.isEmpty()){
-            for (UserModel user : userModelList){
-                UUID id = user.getId();
-                user.add(linkTo(methodOn(UserController.class).getOneUser(id)).withSelfRel());
-            }
-        }
         return ResponseEntity.status(HttpStatus.OK).body(userModelList);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("getOne/{id}")
     public ResponseEntity<Object> getOneUser(@PathVariable(value = "id") UUID id){
         Optional<UserModel> user0 = Optional.ofNullable(userService.getById(id));
         if (user0.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        user0.get().add(linkTo(methodOn(UserController.class).getAllUsers()).withRel("users"));
 
         return ResponseEntity.status(HttpStatus.OK).body(user0.get());
     }
 
-    @GetMapping("/users/{name}")
+    @GetMapping("getName/{name}")
     public ResponseEntity<Object> getByName(@PathVariable(value = "name") String name) {
         Optional<UserModel> user0 = Optional.ofNullable(userService.findByName(name));
         if (user0.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        user0.get().add(linkTo(methodOn(UserController.class).getAllUsers()).withRel("Users"));
 
         return ResponseEntity.status(HttpStatus.OK).body(user0.get());
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("put/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserDTO userDTO){
         Optional<UserModel> user0 = Optional.ofNullable(userService.getById(id));
         if (user0.isEmpty()){
@@ -78,7 +70,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> deleteUserById(@PathVariable(value = "id") UUID id){
         Optional<UserModel> user0 = Optional.ofNullable(userService.getById(id));
         if (user0.isEmpty()){
@@ -88,9 +80,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping("deleteAll")
     public ResponseEntity<String> deleteAllUsers(){
         userService.deleteAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body("Users deleted successfully");
+    }
+
+    @PostMapping("/{userId}/joinPublicCommunity/{communityId}")
+    public ResponseEntity<Void> joinPublicCommunity(@PathVariable UUID userId, @PathVariable UUID communityId) {
+        userService.joinPublicCommunity(userId, communityId);
+        return ResponseEntity.ok().build();
     }
 }

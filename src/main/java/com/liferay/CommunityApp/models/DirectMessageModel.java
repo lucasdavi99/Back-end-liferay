@@ -6,27 +6,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "TB_COMMENT")
-public class CommentModel {
+@Table(name = "TB_Direct_Message")
+public class DirectMessageModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Column(nullable = false)
     private String content;
-    @Column(name = "creation_date")
-    private LocalDateTime creationDate;
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private UserModel author;
-    @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "post_id")
-    private PostModel post;
+    @ManyToOne
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    private UserModel sender;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", referencedColumnName = "id")
+    private UserModel receiver;
+
 }

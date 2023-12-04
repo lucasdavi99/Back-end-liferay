@@ -29,12 +29,14 @@ public class InvitationController {
     }
 
     @PostMapping("/accept/{invitationId}")
+    @Operation(summary = "Aceita o convite", description = "Endpoint para aceitar o convite")
     public ResponseEntity<String> acceptInvitation(@PathVariable UUID invitationId) {
         invitationService.acceptInvitation(invitationId);
         return new ResponseEntity<>("Convite aceito", HttpStatus.OK);
     }
 
     @PostMapping("/decline/{invitationId}")
+    @Operation(summary = "Recusa o convite", description = "Endpoint para recusar o convite")
     public ResponseEntity<String> declineInvitation(@PathVariable UUID invitationId) {
         invitationService.declineInvitation(invitationId);
         return new ResponseEntity<>("Convite recusado", HttpStatus.OK);

@@ -76,8 +76,12 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Community not found with id: " + communityId));
 
         if (community.getParticular() == CommunityPrivate.PUBLIC) {
-            community.getMembers().add(user);
-            communityRepository.save(community);
+            if (!community.getMembers().contains(user)) {
+                community.getMembers().add(user);
+                communityRepository.save(community);
+            } else {
+                throw new IllegalStateException("User is already a member of the community");
+            }
         } else {
             throw new IllegalStateException("Cannot join private community");
         }

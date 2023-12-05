@@ -4,6 +4,7 @@ import com.liferay.CommunityApp.dtos.CommentDTO;
 import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.CommentModel;
 import com.liferay.CommunityApp.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    // Endpoint para criar um novo comentário
+    @Operation(summary = "Cria um novo comentário em um post específico.")
     @PostMapping("/new-comment/{postId}")
     public ResponseEntity<Object> newComment(@RequestBody @Valid CommentDTO commentDTO, @PathVariable(value = "postId") UUID postId) {
         try {
@@ -35,8 +36,8 @@ public class CommentController {
         }
     }
 
-    // Endpoint para obter todos os comentários de um post
     @GetMapping("/by-post/{postId}")
+    @Operation(summary = "Obtém comentários por post usando id.")
     public ResponseEntity<Object> getCommentsByPost(@PathVariable(value = "postId") UUID postId) {
         try {
             List<CommentModel> comments = commentService.findCommentsByPost(postId);
@@ -46,8 +47,9 @@ public class CommentController {
         }
     }
 
-    // Endpoint para atualizar um comentário
+
     @PutMapping("/{id}")
+    @Operation(summary = "Atualiza um comentário existente usando id.")
     public ResponseEntity<Object> updateComment(@PathVariable("id") UUID id, @RequestBody @Valid CommentDTO commentDTO) {
         try {
             CommentModel commentModel = new CommentModel();
@@ -64,8 +66,9 @@ public class CommentController {
         }
     }
 
-    // Endpoint para excluir um comentário
+
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta um comentário pelo id.")
     public ResponseEntity<Object> deleteComment(@PathVariable("id") UUID id) {
         try {
             commentService.deleteComment(id);

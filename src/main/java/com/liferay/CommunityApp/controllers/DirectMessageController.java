@@ -5,6 +5,7 @@ import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.DirectMessageModel;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.service.DirectMessageService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class DirectMessageController {
     @Autowired
     private DirectMessageService directMessageService;
 
+    @Operation(summary = "Envia uma mensagem direta para outro usuário.")
     @PostMapping("dm/{login}")
     public ResponseEntity<Object> newMessage(@RequestBody @Valid DirectMessageDTO directMessageDTO, @PathVariable(value = "login") String login) throws CustomAuthenticationException {
         var directMessageModel = new DirectMessageModel();

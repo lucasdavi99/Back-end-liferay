@@ -13,6 +13,7 @@
 //import org.springframework.context.annotation.Profile;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //
+//import java.time.LocalDate;
 //import java.util.Arrays;
 //
 //@Configuration
@@ -36,15 +37,21 @@
 //        String encodedPasswordUser3 = encoder.encode("12345");
 //
 //        //usuários de teste
-//        UserModel u1 = new UserModel(null, "lacoste", "lacoste@gmail.com", encodedPasswordUser1, "Lacoste da Silva",UserRole.ADMIN);
-//        UserModel u2 = new UserModel(null, "irineu", "vocenaosabenemeu@gmail.com", encodedPasswordUser2, "Irineu Naosabe",UserRole.USER);
-//        UserModel u3 = new UserModel(null, "belligol", "teste@gmail.com", encodedPasswordUser3, "Bellingham",UserRole.USER);
-//
-//        //comunidades de teste
-//        CommunityModel c1 = new CommunityModel(null, "Fifinha dos cria", "Melhor comunidade para fifeiros", "Brasil, Pernambuco", CommunityPrivate.PUBLIC, u1, Arrays.asList(u1, u2));
-//        CommunityModel c2 = new CommunityModel(null, "Ingles dos cria", "Melhor comunidade para aprendizes de ingles", "Brasil, Pernambuco", CommunityPrivate.PUBLIC, u3, Arrays.asList(u1, u2, u3));
+//        UserModel u1 = new UserModel(null, "lacoste","kervensilva@gmail.com", encodedPasswordUser1, "Kerven Kildhery", "Engenheiro de Software","Me chamo kerven, estudante de T.I" ,"Recife - PE", UserRole.USER, null, null, null);
+//        UserModel u2 = new UserModel(null, "irineu","lucasdavi@gmail.com", encodedPasswordUser2, "Lucas Davi", "Arquiteto de Software", "Me chamo lucas, estudante de T.I" ,"Recife - PE", UserRole.USER, null, null, null);
+//        UserModel u3 = new UserModel(null, "belligol","julio@gmail.com", encodedPasswordUser3, "Julio Cesar", "Dono de Software", "Me chamo julio, estudante de moda" ,"Recife - PE", UserRole.USER, null, null, null);
+////
+////        UserModel u1 = new UserModel(null, "lacoste", "lacoste@gmail.com", encodedPasswordUser1, "Lacoste da Silva",UserRole.ADMIN);
+////        UserModel u2 = new UserModel(null, "irineu", "vocenaosabenemeu@gmail.com", encodedPasswordUser2, "Irineu Naosabe",UserRole.USER);
+////        UserModel u3 = new UserModel(null, "belligol", "teste@gmail.com", encodedPasswordUser3, "Bellingham",UserRole.USER);
 //
 //        userRepository.saveAll(Arrays.asList(u1, u2,u3));
+//
+//        //comunidades de teste
+//        CommunityModel c1 = new CommunityModel(null, "Os ingleses do Recife", "Grupo para amadores da língua inglesa (proficiência britânica) localizado no Recife, Pernambuco", u2,UserRole.ADMIN, CommunityPrivate.PUBLIC, LocalDate.parse("2020-12-08"), Arrays.asList(u1), null, null);
+//        CommunityModel c2 = new CommunityModel(null, "Os franceses do Recife", "Grupo para amadores da língua francesa (proficiência europeia) localizado no Recife, Pernambuco", u2,UserRole.ADMIN, CommunityPrivate.PUBLIC, LocalDate.parse("2020-12-08"), Arrays.asList(u1), null, null);
+//
+//
 //        communityRepository.saveAll(Arrays.asList(c1, c2));
 //    }
 //}

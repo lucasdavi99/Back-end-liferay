@@ -2,17 +2,26 @@ package com.liferay.CommunityApp.models;
 
 import com.liferay.CommunityApp.enums.InvitationStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "tb_invitation")
+@Table(name = "TB_INVITATION")
 public class InvitationModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(name = "content")
+    private String content;
 
     @Enumerated(EnumType.STRING)
     private InvitationStatus status;
@@ -31,37 +40,4 @@ public class InvitationModel {
     @ManyToOne
     @JoinColumn(name = "community_id")
     private CommunityModel community;
-
-    public InvitationModel(UUID id, InvitationStatus status, LocalDateTime sendDate, UserModel sender, UserModel recipient, CommunityModel community) {
-        this.id = id;
-        this.status = status;
-        this.sendDate = sendDate;
-        this.sender = sender;
-        this.recipient = recipient;
-        this.community = community;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public InvitationStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getSendDate() {
-        return sendDate;
-    }
-
-    public UserModel getSender() {
-        return sender;
-    }
-
-    public UserModel getRecipient() {
-        return recipient;
-    }
-
-    public CommunityModel getCommunity() {
-        return community;
-    }
 }

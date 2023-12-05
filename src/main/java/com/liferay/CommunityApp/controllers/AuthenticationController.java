@@ -35,7 +35,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Login com usuário existente", description = "Endpoint para autenticar e fazer login com um usuário existente.")
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data) {
         if (this.userRepository.findByLogin(data.login()) == null) {
             return ResponseEntity.badRequest().body("Usuário não encontrado");
         }

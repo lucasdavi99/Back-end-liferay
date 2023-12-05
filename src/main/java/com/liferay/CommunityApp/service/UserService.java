@@ -1,12 +1,10 @@
 package com.liferay.CommunityApp.service;
 
-import com.liferay.CommunityApp.enums.CommunityPrivate;
 import com.liferay.CommunityApp.exceptions.ResourceNotFoundException;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.repositories.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

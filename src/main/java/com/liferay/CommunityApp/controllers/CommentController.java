@@ -5,6 +5,7 @@ import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.CommentModel;
 import com.liferay.CommunityApp.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "comments")
+@Tag(name = "Comment")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
-    @Operation(summary = "Cria um novo comentário em um post específico.")
+    @Operation(summary = "Criar um novo comentário em um post específico.", description = "Endpoint para criar e salvar um novo comentário em um post específico.")
     @PostMapping("/new-comment/{postId}")
     public ResponseEntity<Object> newComment(@RequestBody @Valid CommentDTO commentDTO, @PathVariable(value = "postId") UUID postId) {
         try {
@@ -36,8 +38,8 @@ public class CommentController {
         }
     }
 
+    @Operation(summary = "Obter comentários por post usando ID.", description = "Endpoint para obter uma lista de comentários associados a um post específico.")
     @GetMapping("/by-post/{postId}")
-    @Operation(summary = "Obtém comentários por post usando id.")
     public ResponseEntity<Object> getCommentsByPost(@PathVariable(value = "postId") UUID postId) {
         try {
             List<CommentModel> comments = commentService.findCommentsByPost(postId);
@@ -47,9 +49,8 @@ public class CommentController {
         }
     }
 
-
+    @Operation(summary = "Atualizar um comentário existente usando ID.", description = "Endpoint para atualizar as informações de um comentário existente por seu ID.")
     @PutMapping("/{id}")
-    @Operation(summary = "Atualiza um comentário existente usando id.")
     public ResponseEntity<Object> updateComment(@PathVariable("id") UUID id, @RequestBody @Valid CommentDTO commentDTO) {
         try {
             CommentModel commentModel = new CommentModel();
@@ -66,9 +67,8 @@ public class CommentController {
         }
     }
 
-
+    @Operation(summary = "Deletar um comentário pelo ID.", description = "Endpoint para excluir um comentário pelo seu ID.")
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deleta um comentário pelo id.")
     public ResponseEntity<Object> deleteComment(@PathVariable("id") UUID id) {
         try {
             commentService.deleteComment(id);

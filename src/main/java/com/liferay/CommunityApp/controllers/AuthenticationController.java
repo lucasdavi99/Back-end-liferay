@@ -7,6 +7,7 @@ import com.liferay.CommunityApp.dtos.UserDTO;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,28 +22,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("auth")
+@Tag(name = "Authentication")
 public class AuthenticationController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     TokenService tokenService;
 
+    @Operation(summary = "Login com usuário existente", description = "Endpoint para autenticar e fazer login com um usuário existente.")
     @PostMapping("/login")
-    @Operation(summary = "Faz login com usuário existente.")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
-        if (this.userRepository.findByLogin(data.login()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado");
+        if (this.userRepository.findByLogin(data.login()) == null) {
+            return ResponseEntity.badRequest().body("Usuário não encontrado");
+        }
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
+    @Operation(summary = "Registrar um novo usuário", description = "Endpoint para registrar um novo usuário.")
     @PostMapping("/register")
-    @Operation(summary = "Registra um novo usuário.")
     public ResponseEntity<String> register(@RequestBody @Valid UserDTO data) {
-        if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body("Esse usuário já existe");
+        if (this.userRepository.findByLogin(data.login()) != null) {
+            return ResponseEntity.badRequest().body("Esse usuário já existe");
+        }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         var newUser = new UserModel(data.email(), data.login(), encryptedPassword);
         this.userRepository.save(newUser);

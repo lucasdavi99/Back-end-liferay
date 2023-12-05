@@ -4,6 +4,7 @@ import com.liferay.CommunityApp.dtos.CommunityDTO;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("communities/api/")
+@Tag(name = "Community")
 public class CommunityController {
 
     @Autowired

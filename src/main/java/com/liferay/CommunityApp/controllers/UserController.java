@@ -4,6 +4,7 @@ import com.liferay.CommunityApp.dtos.UserDTO;
 import com.liferay.CommunityApp.models.UserModel;
 import com.liferay.CommunityApp.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("users/api/")
+@Tag(name = "User")
 public class UserController {
 
     @Autowired

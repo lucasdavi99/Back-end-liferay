@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,13 +32,19 @@ public class PostController {
         try {
             var postModel = new PostModel();
             BeanUtils.copyProperties(postDTO, postModel);
+
+            if (postDTO.image() != null) {
+                byte[] decodedBytes = Base64.getDecoder().decode(postDTO.image());
+                postModel.setImage(decodedBytes);
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postModel, communityName));
         } catch (CustomAuthenticationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }catch (CommunityException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao criar a postagem", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

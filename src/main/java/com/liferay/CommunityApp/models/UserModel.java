@@ -43,7 +43,9 @@ public class UserModel extends RepresentationModel<UserModel> implements UserDet
     private String locale;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Lob
     private byte[] profilePhoto;
+    @Lob
     private byte[] coverPhoto;
 
     @JsonIgnore

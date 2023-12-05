@@ -77,10 +77,6 @@ public class UserService {
         UserDetails currentUser = (UserDetails) authentication.getPrincipal();
         CommunityModel community = communityRepository.findByName(communityName).orElseThrow(() -> new ResourceNotFoundException("Comunidade " + communityName + " não encontrada"));
 
-        if (community.getParticular() != CommunityPrivate.PUBLIC) {
-            throw new IllegalStateException("Não é possível ingressar na comunidade privada, somente com convite");
-        }
-
         boolean isAlreadyMember = community.getMembers().stream().anyMatch(member -> member.getUsername().equals(currentUser.getUsername()));
         if (isAlreadyMember) {
             throw new IllegalStateException("Usuário já é membro dessa comunidade");

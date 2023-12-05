@@ -44,7 +44,7 @@ public class PostService {
             if (community == null) {
                 throw new CommunityException("Comunidade não encontrada ou nome de comunidade inválido");
             }
-            if (!community.getMembers().contains(currentUser)) {
+            if (community.getMembers().stream().noneMatch(member -> member.getId().equals(((UserModel) currentUser).getId()))) {
                 throw new CommunityException("Usuário não é membro da comunidade");
             }
 

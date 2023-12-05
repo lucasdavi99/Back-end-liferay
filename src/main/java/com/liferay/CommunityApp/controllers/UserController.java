@@ -86,9 +86,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Users deleted successfully");
     }
 
-    @PostMapping("/{userId}/joinPublicCommunity/{communityId}")
-    public ResponseEntity<Void> joinPublicCommunity(@PathVariable UUID userId, @PathVariable UUID communityId) {
-        userService.joinPublicCommunity(userId, communityId);
-        return ResponseEntity.ok().build();
+    @PostMapping("/joinPublicCommunity/{communityName}")
+    public ResponseEntity<String> joinPublicCommunity(@PathVariable String communityName) {
+        try {
+            userService.joinPublicCommunity(communityName);
+            String message = "Bem vindo a comunidade";
+            return ResponseEntity.ok().body(message);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

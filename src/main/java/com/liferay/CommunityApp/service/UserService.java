@@ -8,6 +8,9 @@ import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.repositories.UserRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,18 +72,21 @@ public class UserService {
         return null;
     }
 
-    public void joinPublicCommunity(UUID userId, UUID communityId) {
-        UserModel user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        CommunityModel community = communityRepository.findById(communityId)
-                .orElseThrow(() -> new ResourceNotFoundException("Community not found with id: " + communityId));
+    public void joinPublicCommunity(String communityName) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+        CommunityModel community = communityRepository.findByName(communityName).orElseThrow(() -> new ResourceNotFoundException("Comunidade " + communityName + " não encontrada"));
 
-        if (community.getParticular() == CommunityPrivate.PUBLIC) {
-            community.getMembers().add(user);
-            communityRepository.save(community);
-        } else {
-            throw new IllegalStateException("Cannot join private community");
+        if (community.getParticular() != CommunityPrivate.PUBLIC) {
+            throw new IllegalStateException("Não é possível ingressar na comunidade privada, somente com convite");
         }
-    }
 
+        boolean isAlreadyMember = community.getMembers().stream().anyMatch(member -> member.getUsername().equals(currentUser.getUsername()));
+        if (isAlreadyMember) {
+            throw new IllegalStateException("Usuário já é membro dessa comunidade");
+        }
+
+        community.getMembers().add((UserModel) currentUser);
+        communityRepository.save(community);
+    }
 }

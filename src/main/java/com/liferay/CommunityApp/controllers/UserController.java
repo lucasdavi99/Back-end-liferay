@@ -104,4 +104,17 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/leaveCommunity/{communityName}")
+    @Operation(summary = "Sair de uma comunidade", description = "Endpoint para permitir que um usuário saia de uma comunidade.")
+    public ResponseEntity<String> leaveCommunity(@PathVariable String communityName) {
+        try {
+            userService.leaveCommunity(communityName);
+            String message = "Você saiu da comunidade";
+            return ResponseEntity.ok().body(message);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

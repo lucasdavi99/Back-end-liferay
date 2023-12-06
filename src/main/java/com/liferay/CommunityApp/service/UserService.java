@@ -83,4 +83,19 @@ public class UserService {
         community.getMembers().add((UserModel) currentUser);
         communityRepository.save(community);
     }
+
+    public void leaveCommunity(String communityName) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+        CommunityModel community = communityRepository.findByName(communityName).orElseThrow(() -> new ResourceNotFoundException("Comunidade " + communityName + " não encontrada"));
+
+        boolean isMember = community.getMembers().stream().anyMatch(member -> member.getUsername().equals(currentUser.getUsername()));
+        if (!isMember) {
+            throw new IllegalStateException("Usuário não é membro dessa comunidade");
+        }
+
+        community.getMembers().removeIf(member -> member.getUsername().equals(currentUser.getUsername()));
+        communityRepository.save(community);
+    }
+
 }

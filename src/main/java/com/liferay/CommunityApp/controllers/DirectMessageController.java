@@ -1,0 +1,33 @@
+package com.liferay.CommunityApp.controllers;
+
+import com.liferay.CommunityApp.dtos.DirectMessageDTO;
+import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
+import com.liferay.CommunityApp.models.DirectMessageModel;
+import com.liferay.CommunityApp.service.DirectMessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Tag(name = "Direct Message")
+public class DirectMessageController {
+
+    @Autowired
+    private DirectMessageService directMessageService;
+
+    @Operation(summary = "Enviar mensagem direta para outro usuário", description = "Endpoint para criar e enviar uma nova mensagem direta para outro usuário.")
+    @PostMapping("dm/{login}")
+    public ResponseEntity<Object> newMessage(@RequestBody @Valid DirectMessageDTO directMessageDTO, @PathVariable(value = "login") String login) throws CustomAuthenticationException {
+        var directMessageModel = new DirectMessageModel();
+        BeanUtils.copyProperties(directMessageDTO, directMessageModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(directMessageService.sendDirectMessage(directMessageModel, login));
+    }
+}

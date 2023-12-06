@@ -35,6 +35,9 @@ public class CommunityService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserModel currentUser = (UserModel) userDetails;
         if (authentication.isAuthenticated() && userDetails.isAccountNonExpired() && currentUser.isAccountNonExpired()) {
+            String communityName = communityModel.getName().replaceAll("\\s", "-");
+            communityModel.setName(communityName);
+
             communityModel.setAuthor(currentUser);
             communityModel.setCreationDate(LocalDate.now());
         }

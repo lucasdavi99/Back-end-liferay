@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(Arrays.toString(SWAGGER_URL))).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/register")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/posts/new-post/{communityName}")).authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

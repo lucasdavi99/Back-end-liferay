@@ -18,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("communities/api/")
+@CrossOrigin(origins = "*")
 @Tag(name = "Community")
 public class CommunityController {
 

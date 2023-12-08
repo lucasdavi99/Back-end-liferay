@@ -22,7 +22,6 @@ public class SwaggerConfig {
                         .title("Liferay Community API")
                         .description("Esta é a API para a comunidade Liferay, oferecendo uma variedade de serviços e recursos.")
                         .version("1.0.0")
-                        .termsOfService("http://terms.of.service.url/")
                         .contact(new Contact()
                                 .name("Lucas Davi")
                                 .email("lucasdavi99@hotmial.com")

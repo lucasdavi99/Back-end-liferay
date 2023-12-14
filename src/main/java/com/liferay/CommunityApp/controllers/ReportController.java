@@ -1,5 +1,6 @@
 package com.liferay.CommunityApp.controllers;
 
+import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.ReportModel;
 import com.liferay.CommunityApp.service.ReportService;
 import com.liferay.CommunityApp.service.utils.ExportExcelReportUtil;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +32,13 @@ public class ReportController {
 
     @Operation(summary = "Obter relatório da comunidade", description = "Endpoint para obter o relatório da comunidade.")
     @GetMapping("/community")
-    public ResponseEntity<List<ReportModel>> getCommunityReport() {
-        List<ReportModel> communityReport = reportService.CommunityReport();
-        return ResponseEntity.ok(communityReport);
+    public ResponseEntity<Object> getCommunityReport() {
+        try {
+            List<ReportModel> communityReport = reportService.CommunityReport();
+            return ResponseEntity.ok(communityReport);
+        }catch (CustomAuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Exportar relatório para Excel", description = "Endpoint para exportar o relatório da comunidade para um arquivo Excel.")
@@ -53,9 +59,9 @@ public class ReportController {
 
             excelExporter.export(response);
 
-            return ResponseEntity.status(HttpStatus.OK).body("SUCCESS: Report exported successfully");
+            return ResponseEntity.status(HttpStatus.OK).body("SUCESSO: Relatório exportado com sucesso");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: Error while trying to export report. Contact Support ASAP");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLITO: Erro ao tentar exportar relatório. Entre em contato com o suporte o mais rápido possível");
         }
     }
 

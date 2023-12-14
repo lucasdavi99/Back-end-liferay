@@ -4,6 +4,8 @@ INSERT INTO TB_USER (id, email, locale, login, name, password, role) VALUES ('81
 -- Criação do usuário com senha 67890
 INSERT INTO TB_USER (id, email, locale, login, name, password, role) VALUES ('8c1bd3a2-7a90-4e50-9b5d-b103a0531033', 'vocenaosabenemeu@gmail.com', 'Brasil', 'irineu', 'Irineu Naosabe', '$2a$12$B0RRXtCYDoqav9lzmaOLmu2MLM7LiyKO79ARxJLrAWxsrnNJVaTbW', 'USER');
 
+INSERT INTO TB_USER (id, email, locale, login, name, password, role) VALUES ('07fe1e52-9ad1-11ee-b9d1-0242ac120002', 'kerven@gmail.com', 'Brasil', 'kerven', 'Kerven Kildhery', '$2a$12$Dm9SViGVCSYTITIcSsNbS.lMP68D8T7vQOIOMxjYE8KFYal4Q4.cW', 'USER');
+
 -- Criação da comunidade
 INSERT INTO TB_COMMUNITIES (id, author_id, name, description, locale, particular, author_role) VALUES ('82b910aa-e64c-48f2-abdf-cb728dfd4b21', '814c0188-28b6-42c5-98e9-96c024a6d487', 'fifinha-dos-cria', 'Melhor comunidade para fifeiros', 'Brasil', 'PUBLIC', 'ADMIN');
 

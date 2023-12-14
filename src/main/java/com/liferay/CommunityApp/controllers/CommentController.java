@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "comments")
+@RequestMapping(value = "comments/api/")
 @Tag(name = "Comment")
 public class CommentController {
 
@@ -25,7 +25,7 @@ public class CommentController {
     private CommentService commentService;
 
     @Operation(summary = "Criar um novo comentário em um post específico.", description = "Endpoint para criar e salvar um novo comentário em um post específico.")
-    @PostMapping("/new-comment/{postId}")
+    @PostMapping("new-comment/{postId}")
     public ResponseEntity<Object> newComment(@RequestBody @Valid CommentDTO commentDTO, @PathVariable(value = "postId") UUID postId) {
         try {
             var commentModel = new CommentModel();
@@ -39,7 +39,7 @@ public class CommentController {
     }
 
     @Operation(summary = "Obter comentários por post usando ID.", description = "Endpoint para obter uma lista de comentários associados a um post específico.")
-    @GetMapping("/by-post/{postId}")
+    @GetMapping("by-post/{postId}")
     public ResponseEntity<Object> getCommentsByPost(@PathVariable(value = "postId") UUID postId) {
         try {
             List<CommentModel> comments = commentService.findCommentsByPost(postId);
@@ -50,7 +50,7 @@ public class CommentController {
     }
 
     @Operation(summary = "Atualizar um comentário existente usando ID.", description = "Endpoint para atualizar as informações de um comentário existente por seu ID.")
-    @PutMapping("/{id}")
+    @PutMapping("put/{id}")
     public ResponseEntity<Object> updateComment(@PathVariable("id") UUID id, @RequestBody @Valid CommentDTO commentDTO) {
         try {
             CommentModel commentModel = new CommentModel();
@@ -68,7 +68,7 @@ public class CommentController {
     }
 
     @Operation(summary = "Deletar um comentário pelo ID.", description = "Endpoint para excluir um comentário pelo seu ID.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> deleteComment(@PathVariable("id") UUID id) {
         try {
             commentService.deleteComment(id);

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "posts")
+@RequestMapping(value = "posts/api")
 @Tag(name = "Post")
 public class PostController {
 
@@ -27,7 +27,7 @@ public class PostController {
     PostService postService;
 
     @Operation(summary = "Criar um novo post em uma comunidade específica.", description = "Endpoint para criar e salvar um novo post em uma comunidade específica.")
-    @PostMapping("/new-post/{communityName}")
+    @PostMapping("new-post/{communityName}")
     public ResponseEntity<Object> create(@RequestBody @Valid PostDTO postDTO, @PathVariable(value = "communityName") String communityName) {
         try {
             var postModel = new PostModel();
@@ -49,7 +49,7 @@ public class PostController {
     }
 
     @Operation(summary = "Atualizar um post existente pelo seu ID.", description = "Endpoint para atualizar as informações de um post existente pelo seu ID.")
-    @PutMapping("/{id}")
+    @PutMapping("put/{id}")
     public ResponseEntity<Object> update(@PathVariable("id") UUID id, @RequestBody @Valid PostDTO postDTO) {
         try {
             PostModel postModel = new PostModel();
@@ -67,7 +67,7 @@ public class PostController {
     }
 
     @Operation(summary = "Deletar um post pelo seu ID.", description = "Endpoint para excluir um post pelo seu ID.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable("id") UUID id) {
         try{
             postService.deletePost(id);
@@ -78,7 +78,7 @@ public class PostController {
     }
 
     @Operation(summary = "Listar todos os posts.", description = "Endpoint para obter uma lista de todos os posts cadastrados.")
-    @GetMapping
+    @GetMapping("getAll")
     public ResponseEntity<List<PostModel>> findAll() {
         List<PostModel> list = postService.findAll();
         return ResponseEntity.ok().body(list);

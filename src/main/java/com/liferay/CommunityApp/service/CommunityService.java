@@ -61,7 +61,6 @@ public class CommunityService {
     private void updateData(CommunityModel entity, CommunityModel obj) {
         entity.setName(obj.getName());
         entity.setDescription(obj.getDescription());
-        entity.setLocale(obj.getLocale());
         entity.setMembers(obj.getMembers());
         entity.setParticular(obj.getParticular());
     }

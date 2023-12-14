@@ -60,7 +60,7 @@ public class CommunityController {
         return communityService.searchByDescription(description);
     }
 
-    @Operation(summary = "Inserir uma nova comunidade", description = "Endpoint para criar e salvar uma nova comunidade.")
+    @Operation(summary = "Cria uma nova comunidade", description = "Endpoint para criar e salvar uma nova comunidade.")
     @PostMapping("post")
     public ResponseEntity<Object> insert(@RequestBody @Valid CommunityDTO communityDTO){
         var communityModel = new CommunityModel();
@@ -76,10 +76,12 @@ public class CommunityController {
     }
 
     @Operation(summary = "Atualizar uma comunidade por ID", description = "Endpoint para atualizar as informações de uma comunidade existente por seu ID.")
-    @PutMapping("deleteAll")
-    public ResponseEntity<CommunityModel> update(@PathVariable UUID communityId, @RequestBody CommunityModel obj) {
-        obj = communityService.update(communityId, obj);
-        return ResponseEntity.ok().body(obj);
+    @PutMapping("{id}")
+    public ResponseEntity<CommunityModel> update(@PathVariable("id") UUID communityId, @RequestBody CommunityDTO communityDTO) {
+        CommunityModel communityModel  = new CommunityModel();
+        BeanUtils.copyProperties(communityDTO, communityModel);
+        CommunityModel updateCommunity = communityService.update(communityId, communityModel);
+        return ResponseEntity.ok().body(updateCommunity);
     }
 
 }

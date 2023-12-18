@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
@@ -27,22 +30,6 @@ public class SecurityConfiguration {
 
     @Autowired
     SecurityFilter securityFilter;
-
-    private static final String[] SWAGGER_URL = {
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/webjars/**",
-            "/swagger-ui/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/swagger-ui.html/**",
-            "/swagger-docs/**"
-    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
@@ -55,13 +42,27 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(Arrays.toString(SWAGGER_URL))).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/register")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/users/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/posts/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/communities/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/comments/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/invite/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/dm/**")).authenticated()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/reports/**")).hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://back-end-liferay-production.up.railway.app"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

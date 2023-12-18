@@ -92,6 +92,47 @@ Agora você está pronto para começar a desenvolver e explorar o CommunityApp l
 6. **Aproveitando os Recursos:**
    - Explore operações como criação de postagens, interação em comunidades e outras funcionalidades disponíveis. O token JWT garante que você tenha as permissões adequadas.
 
+Claro, aqui está um exemplo de um README básico sobre como um usuário pode usar os serviços do Mailtrap no projeto:
+
+---
+
+# Configuração do Mailtrap para recuperar a senha
+
+O Mailtrap é um serviço que permite simular o envio de e-mails em ambientes de desenvolvimento, sem que os e-mails reais sejam entregues aos destinatários. Isso é extremamente útil para testar a funcionalidade de envio de e-mails em um aplicativo sem impactar os usuários reais.
+
+## Passos para Configurar o Mailtrap no Seu Projeto Spring Boot
+
+### 1. Crie uma Conta no Mailtrap
+
+1. Acesse [Mailtrap](https://mailtrap.io/) e crie uma conta.
+2. Após criar uma conta, crie uma nova caixa de entrada ("inbox") no Mailtrap. Anote as credenciais fornecidas.
+
+### 2. Configuração no `application.properties`
+
+No seu arquivo `application.properties` do projeto Spring Boot, adicione as seguintes configurações:
+
+```properties
+# Configurações do Mailtrap
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=SEU_USERNAME
+spring.mail.password=SEU_PASSWORD
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
+Substitua `SEU_USERNAME` e `SEU_PASSWORD` pelos valores fornecidos pelo Mailtrap.
+
+### 3. Teste de Envio de E-mails
+
+Agora, ao enviar e-mails no seu aplicativo Spring Boot durante o desenvolvimento, os e-mails serão capturados pelo Mailtrap e exibidos na caixa de entrada configurada.
+
+## Dicas Adicionais
+
+- **Visualização de E-mails:** Acesse a caixa de entrada no Mailtrap para visualizar os e-mails enviados durante o desenvolvimento.
+
+- **Ambiente de Desenvolvimento:** Certifique-se de que estas configurações são usadas apenas no ambiente de desenvolvimento. No ambiente de produção, configure as propriedades do e-mail de maneira apropriada.
+
 Agora você está pronto para explorar e utilizar os recursos da API de maneira segura e autenticada através do Swagger.
 
 

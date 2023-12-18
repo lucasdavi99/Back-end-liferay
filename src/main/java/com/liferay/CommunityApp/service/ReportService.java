@@ -1,5 +1,6 @@
 package com.liferay.CommunityApp.service;
 
+import com.liferay.CommunityApp.exceptions.CustomAuthenticationException;
 import com.liferay.CommunityApp.models.CommunityModel;
 import com.liferay.CommunityApp.models.ReportModel;
 import com.liferay.CommunityApp.repositories.CommentRepository;
@@ -7,6 +8,8 @@ import com.liferay.CommunityApp.repositories.CommunityRepository;
 import com.liferay.CommunityApp.repositories.PostRepository;
 import com.liferay.CommunityApp.repositories.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,7 +30,12 @@ public class ReportService {
     ReportRepository reportRepository;
 
 
-    public List<ReportModel> CommunityReport() {
+    public List<ReportModel> CommunityReport() throws CustomAuthenticationException {
+
+        if (!isUserAdmin()){
+            throw new CustomAuthenticationException("Somente administradores podem gerar relatórios da comunidade.");
+        }
+
         List<CommunityModel> communities = communityRepository.findAll();
         List<ReportModel> reportList = new ArrayList<>();
 
@@ -44,6 +52,12 @@ public class ReportService {
             reportList.add(report);
         }
         return reportRepository.saveAll(reportList);
+    }
+
+    private boolean isUserAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated() &&
+                authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 }
 

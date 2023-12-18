@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "posts/api")
+@CrossOrigin(origins = "*")
 @Tag(name = "Post")
 public class PostController {
 

@@ -8,7 +8,7 @@ public record CommunityDTO
         (@NotBlank String name,
          @NotBlank String description,
          @NotBlank String location,
-         @NotNull CommunityPrivate isPrivate,
+         @NotNull CommunityPrivate particular,
          byte[] coverPhoto,
          byte[] profilePhoto
         )

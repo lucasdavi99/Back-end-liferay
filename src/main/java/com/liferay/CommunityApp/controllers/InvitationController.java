@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("invite")
+@CrossOrigin(origins = "*")
 @Tag(name = "Invitation")
 public class InvitationController {
 

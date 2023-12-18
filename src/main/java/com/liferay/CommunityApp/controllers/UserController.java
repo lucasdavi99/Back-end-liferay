@@ -18,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("users/api/")
+@CrossOrigin(origins = "*")
 @Tag(name = "User")
 public class UserController {
 

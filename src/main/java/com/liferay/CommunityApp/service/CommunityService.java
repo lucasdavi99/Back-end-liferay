@@ -37,7 +37,7 @@ public class CommunityService {
         if (authentication.isAuthenticated() && userDetails.isAccountNonExpired() && currentUser.isAccountNonExpired()) {
             String communityName = communityModel.getName().replaceAll("\\s", "-");
             communityModel.setName(communityName);
-
+            communityModel.setParticular(communityModel.getParticular());
             communityModel.setAuthor(currentUser);
             communityModel.setCreationDate(LocalDate.now());
         }
@@ -61,7 +61,6 @@ public class CommunityService {
     private void updateData(CommunityModel entity, CommunityModel obj) {
         entity.setName(obj.getName());
         entity.setDescription(obj.getDescription());
-        entity.setLocale(obj.getLocale());
         entity.setMembers(obj.getMembers());
         entity.setParticular(obj.getParticular());
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -98,4 +99,16 @@ public class UserService {
         communityRepository.save(community);
     }
 
+    public UserModel findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void updatePassword(UserModel user, String newPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        String encodedPassword = encoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user);
+    }
 }

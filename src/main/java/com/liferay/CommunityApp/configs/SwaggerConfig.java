@@ -41,25 +41,25 @@ public class SwaggerConfig {
                 );
     }
 
-    @Bean
-    CommandLineRunner openBrowser() {
-        return args -> {
-            String os = System.getProperty("os.name").toLowerCase();
-            String swaggerUrl = "http://localhost:8080/swagger-ui.html";
-            try {
-                if (os.contains("win")) {
-                    // Windows
-                    Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", swaggerUrl});
-                } else if (os.contains("mac")) {
-                    // MacOS
-                    Runtime.getRuntime().exec(new String[]{"open", swaggerUrl});
-                } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-                    // Unix or Linux
-                    Runtime.getRuntime().exec(new String[]{"xdg-open", swaggerUrl});
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-    }
+//    @Bean
+//    CommandLineRunner openBrowser() {
+//        return args -> {
+//            String os = System.getProperty("os.name").toLowerCase();
+//            String swaggerUrl = "http://localhost:8080/swagger-ui.html";
+//            try {
+//                if (os.contains("win")) {
+//                    // Windows
+//                    Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", swaggerUrl});
+//                } else if (os.contains("mac")) {
+//                    // MacOS
+//                    Runtime.getRuntime().exec(new String[]{"open", swaggerUrl});
+//                } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+//                    // Unix or Linux
+//                    Runtime.getRuntime().exec(new String[]{"xdg-open", swaggerUrl});
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        };
+//    }
 }
